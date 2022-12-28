@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const plugins = () => {
     const base = [
       new HTMLWebpackPlugin({
-        template: './src/index.html',
+        template: './index.html',
       }),
       new CleanWebpackPlugin(),
       new MiniCssExtractPlugin({
@@ -15,16 +15,16 @@ const plugins = () => {
     ]
     return base
   }
-
 module.exports = {
+    context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: path.resolve(__dirname, './src/index.js'),
+        main: path.resolve(__dirname, '/index.js'),
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, './dist'),
-        assetModuleFilename: 'images/[hash][ext][query]'
+        path: path.resolve(__dirname, 'dist'),
+        assetModuleFilename: '[path][name][ext]'
     },
     plugins: plugins(),
     optimization: {
@@ -42,10 +42,6 @@ module.exports = {
             test: /\.(png|jpg|svg|gif)$/,
             type: 'asset/resource',
           },
-          {
-            test: /\.(ttf|woff|woff2|eot)$/,
-            use: ['file-loader']
-          }
         ]
       }
 }
