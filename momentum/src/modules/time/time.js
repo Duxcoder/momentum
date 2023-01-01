@@ -10,7 +10,8 @@ const Time = (classWrapper) => {
         wrapper.textContent = `${addingZeroFirst(hours)}:${addingZeroFirst(min)}:${addingZeroFirst(sec)}`;
         setTimeout(timeOn, 1000);
     }
-    setTimeout(timeOn)
+    setTimeout(timeOn);
+
 }
 
 export default Time

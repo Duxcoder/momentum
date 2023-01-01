@@ -1,4 +1,4 @@
-const Calendar = (classWrapper, locale) => {
+const Calendar = (classWrapper, locale = 'en') => {
     const wrapper = document.querySelector(classWrapper);
     const date = new Date;
     const optionsDate = {weekday: 'long', day: 'numeric', month: 'long'};
