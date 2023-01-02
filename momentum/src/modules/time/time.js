@@ -1,6 +1,7 @@
+import addingZeroFirst from './addingZeroFirst'
+
 const Time = (classWrapper) => {
     const wrapper = document.querySelector(classWrapper);
-    const addingZeroFirst = (num) => num < 10 ? `0${num}` : num;
 
     const timeOn = () => {
         const date = new Date();

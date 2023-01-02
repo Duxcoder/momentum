@@ -1,4 +1,4 @@
-const inputName = (classInput, lang = 'en') => {
+const InputName = (classInput, lang = 'en') => {
     const textPlaceholder = {
         'ru': '[Ваше имя]',
         'en': '[Enter name]'
@@ -21,4 +21,4 @@ const inputName = (classInput, lang = 'en') => {
     findNameInStorage('name');
 }
 
-export default inputName
+export default InputName
