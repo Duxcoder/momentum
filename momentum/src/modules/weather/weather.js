@@ -109,7 +109,5 @@ const Weather = (defaultCity, lang) => {
         localStorage.setItem('city', e.target.value)
     }
     
-
-
 }
 export default Weather
