@@ -5,20 +5,29 @@ import Calendar from './modules/calendar/calendar';
 import Greetings from './modules/greetings/greetings';
 import InputName from './modules/greetings/inputName';
 import BackgroundSlider from './modules/backgroundSlider/backgroundSlider';
+import Options from './modules/options/options';
+import Weather from './modules/weather/weather';
+import Quotes from './modules/quotes/quotes';
+import Music from './modules/music/Music';
 
-const locale =  {
-    en: 'en',
-    ru: 'ru'
-}
-
+const locale = 'ru'
 const optionSlider = {
     classWrapper: '.main',
     classArrowNext: '.slide-next',
-    classArrowPrev: '.slide-prev'
+    classArrowPrev: '.slide-prev',
+    sourceImages: 'unsplash'
+}
+const defCity = (locale) => {
+    return locale === 'ru' ? 'Минск' : 'Minsk'
 }
 
-Greetings('.greeting', locale.ru);
-InputName('.name', locale.ru);
+Options(locale)
+
+Greetings('.greeting', locale);
+InputName('.name', locale);
 Time('.time');
-Calendar('.date', locale.ru);
-BackgroundSlider(optionSlider)
+Calendar('.date', locale);
+BackgroundSlider(optionSlider);
+Weather(defCity(locale), locale);
+Quotes();
+Music();

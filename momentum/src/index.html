@@ -9,11 +9,24 @@
 <body>
   <header class="header">
     <div class="player">
+      <div class="marquee">Название трека</div>
       <div class="player-controls">
         <button class="play-prev player-icon"></button>
         <button class="play player-icon"></button>
         <button class="play-next player-icon"></button>
+        <button class="volume player-icon"></button>
       </div>
+      <div class="volumeline"></div>
+      <div class="timeline-container">
+        <div class="timeline">
+          <div class="space"></div>
+          <span class="player-slider"></span>
+          <div class="select-point">00:01</div>
+        </div>
+        <div class="time-music">00:01 / 03:12</div>
+      </div>
+      
+
       <ul class="play-list"></ul>
     </div>
     <div class="options">
@@ -22,24 +35,24 @@
         <span class="icon-options"></span> 
       </div>
       <div class="options-wrapper">
-        <div class="select select-language">
-          <span>Language:</span>
-          <select>
-            <option>Russian</option>
-            <option>English</option>
+        <div class="select language-block">
+          <span class="select-title">Language:</span>
+          <select class="select-language" name="select-language">
+            <option value="ru">Russian</option>
+            <option value="en">English</option>
           </select>
         </div>
-        <div class="select select-background-source">
-          <span>Background images from: </span>
-          <select>
-            <option>GitHub</option>
-            <option>Unsplash</option>
-            <option>Flickr</option>
+        <div class="select background-source-block">
+          <span class="select-title">Background images from: </span>
+          <select class="select-background" name="select-background">
+            <option value="github">GitHub</option>
+            <option value="unsplash">Unsplash</option>
+            <option value="flickr">Flickr</option>
           </select>
         </div>
-        <div class="select select-background-tags">
-          <span>Select image by tag:</span>
-          <input type="text">
+        <div class="select background-tags-block">
+          <span class="select-title">Select image by tag:</span>
+          <input class="select-tags" type="text" name="select-tags">
         </div>
       </div>
     </div>
@@ -74,6 +87,5 @@
       <div class="author"></div>
     </div>
   </footer>
-  <script src="src/index.js"></script>
 </body>
 </html>
