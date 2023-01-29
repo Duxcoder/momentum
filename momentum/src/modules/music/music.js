@@ -32,7 +32,7 @@ const Music = () => {
         const domParent = document.querySelector(parentClass);
         musicPlaylist.forEach(trackData => {
         const li = document.createElement('li');
-        li.textContent = trackData.name
+        li.textContent = trackData.name;
         li.classList.add(appendClass);
         domPlaylistTracks.push(li);
         domParent.append(li);
@@ -42,20 +42,21 @@ const Music = () => {
     renderPlaylist('.play-list', 'play-item');
         
     document.addEventListener ('click',  (e) => player(e));
-        const marginLeft = parseInt(styleSelectP.width, 10) / 2;
+    const marginLeft = parseInt(styleSelectP.width, 10) / 2;
     domTimeline.addEventListener('mousemove', (e) => {
-        domSelectPoint.style.marginLeft = `${e.layerX - marginLeft}px`
+        domSelectPoint.style.marginLeft = `${e.layerX - marginLeft}px`;
         domSelectPoint.classList.add('active');
-        const clickOnTimeline = () => {
-            const x = e.layerX * playNow.source.duration / 180;
-            playNow.source.currentTime = x;
-            sliderPosition = e.layerX
-        }
-        domTimeline.addEventListener('click', clickOnTimeline)
     });
     domTimeline.addEventListener('mouseout', (e) => {
         domSelectPoint.classList.remove('active');
     });
+    const clickOnTimeline = (e) => {
+        const x = e.layerX * playNow.source.duration / 180;
+        playNow.source.currentTime = x;
+        sliderPosition = e.layerX;
+        console.dir(playNow.source);
+    }
+    domTimeline.addEventListener('click', (e) => clickOnTimeline(e));
 
     const player = (e) => {
         const timeUpdate = () => {
@@ -87,20 +88,22 @@ const Music = () => {
             const startSlider = () => {
                 timeUpdate();    
                 let stepTwo = Math.round(playNow.source.currentTime)
-                if ((step !== stepTwo)){ // если музыка играет слайдер движется
+                if (step !== stepTwo){ // если музыка играет слайдер движется
                     step = stepTwo;
                     // value += oneStep;
                     if (sliderPosition) {
                         value = sliderPosition; sliderPosition = 0
                     } else {value += oneStep}
                     domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`
-                    console.log( domSlider.style.transform, value)
+                    console.log( domSlider.style.transform, value, playNow.source.ended)
                     if (Math.round(end) === step) {
+                        playNow.source.removeEventListener('timeupdate', startSlider);
                         clickOnNextPrev();
                     }
                 }
             }
             playNow.source.addEventListener('timeupdate', startSlider);
+            
         }
 
         const stopMusicRender = (domTrack) => {
