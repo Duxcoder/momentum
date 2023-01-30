@@ -126,7 +126,9 @@ body {
 .volume {
   background-image: url("../assets/svg/volume.svg");
 }
-
+.volume.mute {
+  background-image: url("../assets/svg/mute.svg");
+}
 @keyframes marquee{
   0% {
       transform: translateX(70%)
@@ -169,6 +171,13 @@ body {
   height: 6px;
   cursor: pointer;
 }
+
+.timeline_active {
+  position: absolute;
+  height: 100%;
+  background-color: rgb(237, 136, 53);
+  transition: 0.3s;
+}
 .space {
   display: flex;
   content: '';
@@ -184,15 +193,83 @@ body {
   margin-left: 4px;
   font-size: 10px;
 }
-.player-slider {
-  display: flex;
-  position: relative;
+
+.slider {
   width: 12px;
   height: 12px;
   margin-left: -6px;
   border-radius: 6px;
   background: #FFFFFF;
   transition: 0.3s;
+  z-index: 2;
+}
+
+.player-slider {
+  display: flex;
+  position: relative;
+}
+
+.slider:hover {
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 8px;
+}
+
+.volume-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.volume-regulator {
+  display: flex;
+  position: absolute;
+  width: 120px;
+  box-sizing: content-box;
+  padding: 16px 0;
+  margin-left: 28px;
+  padding-left: 14px;
+
+}
+
+input[type='range'].volume_range {
+  width: 80px;
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background:rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: 0.3s;
+  opacity: 0;
+  visibility: hidden; 
+}
+
+input[type='range'].volume_range.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+input[type='range'].volume_range:hover{
+  background:rgba(255, 255, 255, 0.85);
+  border-radius: 3px;
+  height: 6px;
+}
+
+input[type='range'].volume_range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: #FFFFFF;
+  transition: 0.3s;
+}
+
+input[type='range'].volume_range::-webkit-slider-thumb:hover {
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  
 }
 
 .select-point {
@@ -211,15 +288,9 @@ body {
   justify-content: center;
   opacity: 0;
 }
+
 .select-point.active {
   opacity: 1;
-}
-
-.player-slider:hover {
-  width: 16px;
-  height: 16px;
-  margin-left: -8px;
-  border-radius: 8px;
 }
 
 .options {
