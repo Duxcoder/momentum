@@ -1,100 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="assets/favicon.ico" rel="shortcut icon" />
-  <title>momentum</title>
-</head>
-<body>
-  <header class="header">
-    <div class="player">
-      <div class="marquee">Select a track to play</div>
-      <div class="player-controls">
-        <button class="play-prev player-icon"></button>
-        <button class="play player-icon"></button>
-        <button class="play-next player-icon"></button>
-        <div class="volume-wrapper">
-          <button class="volume player-icon"></button>
-          <div class="volume-regulator">
-            <input type="range" class="volume_range" name="volume"
-            min="0" max="1" step="0.1" value="0.5">
-            <!-- <div class="volumeline">
-              <div class="vol-slider slider"></div>
-            </div> -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="assets/favicon.ico" rel="shortcut icon" />
+    <title>momentum</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="player_wrapper">
+        <div class="player">
+          <div class="marquee">Select a track to play</div>
+          <div class="player-controls">
+            <button class="play-prev player-icon"></button>
+            <button class="play player-icon"></button>
+            <button class="play-next player-icon"></button>
+            <div class="volume-wrapper">
+              <button class="volume player-icon"></button>
+              <div class="volume-regulator">
+                <input
+                  type="range"
+                  class="volume_range"
+                  name="volume"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0.5"
+                />
+                <!-- <div class="volumeline">
+                <div class="vol-slider slider"></div>
+              </div> -->
+              </div>
+            </div>
+          </div>
+          <div class="timeline-container">
+            <div class="timeline">
+              <div class="timeline_active"></div>
+              <div class="space"></div>
+              <span class="player-slider slider"></span>
+              <div class="select-point"></div>
+            </div>
+            <div class="time-music">00:00 / 00: 00</div>
+          </div>
+          <ul class="play-list"></ul>
+        </div>
+      </div>
+
+      <div class="options">
+        <div class="btn-options">
+          <span>OPTIONS</span>
+          <span class="icon-options"></span>
+        </div>
+        <div class="options-wrapper">
+          <div class="select language-block">
+            <span class="select-title">Language:</span>
+            <select class="select-language" name="select-language">
+              <option value="ru">Russian</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div class="select background-source-block">
+            <span class="select-title">Background images from: </span>
+            <select class="select-background" name="select-background">
+              <option value="github">GitHub</option>
+              <option value="unsplash">Unsplash</option>
+              <option value="flickr">Flickr</option>
+            </select>
+          </div>
+          <div class="select background-tags-block">
+            <span class="select-title">Select image by tag:</span>
+            <input class="select-tags" type="text" name="select-tags" />
           </div>
         </div>
       </div>
-      <div class="timeline-container">
-        <div class="timeline">
-          <div class="timeline_active"></div>
-          <div class="space"></div>
-          <span class="player-slider slider"></span>
-          <div class="select-point"></div>
-        </div>
-        <div class="time-music">00:00 / 00: 00</div>
-      </div>
-      
-
-      <ul class="play-list"></ul>
-    </div>
-    <div class="options">
-      <div class="btn-options">
-        <span>OPTIONS</span>
-        <span class="icon-options"></span> 
-      </div>
-      <div class="options-wrapper">
-        <div class="select language-block">
-          <span class="select-title">Language:</span>
-          <select class="select-language" name="select-language">
-            <option value="ru">Russian</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-        <div class="select background-source-block">
-          <span class="select-title">Background images from: </span>
-          <select class="select-background" name="select-background">
-            <option value="github">GitHub</option>
-            <option value="unsplash">Unsplash</option>
-            <option value="flickr">Flickr</option>
-          </select>
-        </div>
-        <div class="select background-tags-block">
-          <span class="select-title">Select image by tag:</span>
-          <input class="select-tags" type="text" name="select-tags">
+      <div class="weather">
+        <div class="weather_wrapper">
+          <input type="text" class="city" />
+          <i class="weather-icon owf"></i>
+          <div class="weather-error"></div>
+          <div class="description-container">
+            <span class="temperature"></span>
+            <span class="weather-description"></span>
+          </div>
+          <div class="wind"></div>
+          <div class="humidity"></div>
         </div>
       </div>
-    </div>
-    <div class="weather">
-      <input type="text" class="city" />
-      <i class="weather-icon owf"></i>
-      <div class="weather-error"></div>
-      <div class="description-container">
-        <span class="temperature"></span>
-        <span class="weather-description"></span>
+    </header>
+    <main class="main">
+      <div class="slider-icons">
+        <button class="slide-prev slider-icon"></button>
+        <button class="slide-next slider-icon"></button>
       </div>
-      <div class="wind"></div>
-      <div class="humidity"></div>
-    </div>
-  </header>
-  <main class="main">
-    <div class="slider-icons">
-      <button class="slide-prev slider-icon"></button>
-      <button class="slide-next slider-icon"></button>
-    </div>
-    <time class="time"></time>
-    <date class="date"></date>
-    <div class="greeting-container">
-      <span class="greeting"></span>
-      <input type="text" class="name" />
-    </div>
-  </main>
-  <footer class="footer">
-    <button class="change-quote"></button>
-    <div>
-      <div class="quote"></div>
-      <div class="author"></div>
-    </div>
-  </footer>
-</body>
+      <div class="time_wrapper">
+        <time class="time"></time>
+      </div>
+      <div class="date_wrapper">
+        <date class="date"></date>
+      </div>
+      <div class="greeting-container">
+        <div class="greeting_wrapper">
+          <span class="greeting"></span>
+          <input type="text" class="name" />
+        </div>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="quote_wrapper">
+        <div class="quote-container">
+          <button class="change-quote"></button>
+          <div>
+            <div class="quote"></div>
+            <div class="author"></div>
+          </div>
+        </div>
+      </div>
+      <div class="todo_wrapper">
+        <div class="todo">
+          <div class="todo_desk">
+            <div class="todo_head">
+              <div class="todo_drop">Inbox<select name="s" id="s"><option value="2">2</option><option selected value="1">1</option></select></div>
+              <div class="todo_settings"><span></span></div>
+            </div>
+            <div class="todo_list">
+              <ul>
+                <li>
+                  <input type="checkbox" name="kek" class="todo_input"/>
+                  <label for="kek">Scales</label>
+                </li>
+                <li>
+                  <input type="checkbox" name="kek" class="todo_input"/>
+                  <label for="kek">Scales</label>
+                </li>
+                <li>
+                  <input type="checkbox" name="kek" class="todo_input"/>
+                  <label for="kek">Scales</label>
+                </li>
+              </ul>
+            </div>
+            <div class="todo_addToDo">
+              <input type="text" class="todo_textAdd">
+            </div>
+          </div>
+          <button class="todo_btn">ToDo</button>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

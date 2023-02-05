@@ -1,14 +1,14 @@
-import bird from '../../assets/sounds/bird-music.mp3' 
-import onime from '../../assets/sounds/onime-music.mp3' 
-import wind from '../../assets/sounds/wind-music.mp3' 
+import bird from '../../assets/sounds/bird-music.mp3'
+import onime from '../../assets/sounds/onime-music.mp3'
+import wind from '../../assets/sounds/wind-music.mp3'
 import funeral from '../../assets/sounds/funeral-music.mp3'
 
 const Music = () => {
     const musicPlaylist = [
-        {name: 'The breath of the birds', music: bird},
-        {name: 'The groan of life', music: onime},
-        {name: 'Wind of unrest',music: wind},
-        {name: 'Death funeral', music: funeral}
+        { name: 'The breath of the birds', music: bird },
+        { name: 'The groan of life', music: onime },
+        { name: 'Wind of unrest', music: wind },
+        { name: 'Death funeral', music: funeral }
     ];
     musicPlaylist.forEach(item => item.source = new Audio(item.music));
     let playNow;
@@ -18,7 +18,7 @@ const Music = () => {
     const domPlay = document.querySelector('.play');
     const domNext = document.querySelector('.play-next');
     const domPrev = document.querySelector('.play-prev');
-    const domRegulator= document.querySelector('.volume-regulator');
+    const domRegulator = document.querySelector('.volume-regulator');
     const domPlayerControls = document.querySelector('.player-controls')
     const domVolume = document.querySelector('.volume');
     const domRange = document.querySelector('.volume_range');
@@ -30,7 +30,7 @@ const Music = () => {
     const domTime = document.querySelector('.time-music');
     const domSelectPoint = document.querySelector('.select-point');
     const styleSelectP = window.getComputedStyle(domSelectPoint);
-        
+
     const getTime = (source) => {
         const isZero = (num) => num < 10 ? `0${num}` : num
         const time = {
@@ -42,18 +42,19 @@ const Music = () => {
 
     const renderPlaylist = (parentClass, appendClass) => {
         const domParent = document.querySelector(parentClass);
+        domParent.textContent = '';
         musicPlaylist.forEach(trackData => {
-        const li = document.createElement('li');
-        li.textContent = trackData.name;
-        li.classList.add(appendClass);
-        domPlaylistTracks.push(li);
-        domParent.append(li);
+            const li = document.createElement('li');
+            li.textContent = trackData.name;
+            li.classList.add(appendClass);
+            domPlaylistTracks.push(li);
+            domParent.append(li);
         })
     }
-        
+
     renderPlaylist('.play-list', 'play-item');
-        
-    document.addEventListener ('click',  (e) => player(e));
+
+    document.addEventListener('click', (e) => player(e));
     const marginLeft = parseInt(styleSelectP.width, 10) / 2;
     domTimeline.addEventListener('mousemove', (e) => {
         domSelectPoint.style.marginLeft = `${e.layerX - marginLeft}px`;
@@ -67,7 +68,7 @@ const Music = () => {
     const clickOnTimeline = (e) => {
         const x = e.layerX * playNow.source.duration / 180;
         playNow.source.currentTime = x;
-        sliderPosition = e.layerX ;
+        sliderPosition = e.layerX;
         console.dir(playNow.source);
     }
     domTimeline.addEventListener('click', (e) => clickOnTimeline(e));
@@ -79,18 +80,18 @@ const Music = () => {
                 if (!muted) {
                     domRange.classList.add('active');
                     volumeLevel = +domRange.value
-                } 
+                }
             })
-        } 
+        }
     })
-    
+
     document.addEventListener('mouseover', (e) => {
-            if (e.target !== domVolume && 
-                e.target !== domRegulator &&
-                e.target !== domRange &&
-                !e.target.classList.contains('.volume-wrapper')) {
-                domRange.classList.remove('active');
-            }
+        if (e.target !== domVolume &&
+            e.target !== domRegulator &&
+            e.target !== domRange &&
+            !e.target.classList.contains('.volume-wrapper')) {
+            domRange.classList.remove('active');
+        }
     })
 
     const player = (e) => {
@@ -103,8 +104,8 @@ const Music = () => {
                 minutes: getTime(playNow.source.duration).minutes,
                 seconds: getTime(playNow.source.duration).seconds
             }
-            domTime.textContent = 
-            `${timeNow.minutes}:${timeNow.seconds} / ${timeDuration.minutes}:${timeDuration.seconds}`
+            domTime.textContent =
+                `${timeNow.minutes}:${timeNow.seconds} / ${timeDuration.minutes}:${timeDuration.seconds}`
         }
         const playMusicRender = (musicData, domTrack) => {
             if (playNow) {
@@ -123,8 +124,8 @@ const Music = () => {
             // let step = Math.round(playNow.source.currentTime)
             const startSlider = () => {
                 timeUpdate();
-                   playNow.source.muted = muted;
-                   playNow.source.volume = volumeLevel;
+                playNow.source.muted = muted;
+                playNow.source.volume = volumeLevel;
                 // let stepTwo = Math.round(playNow.source.currentTime)
                 // if (step !== stepTwo){ // если музыка играет слайдер движется
                 //     step = stepTwo;
@@ -142,14 +143,14 @@ const Music = () => {
                 const end = playNow.source.duration;
                 let coeff = parseInt(styleDomTimeline.width, 10) / end;
                 let value = Math.round(coeff * playNow.source.currentTime);
-                    domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`;
-                    domTimelineActive.style.width = `${Math.round(value)}px`
+                domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`;
+                domTimelineActive.style.width = `${Math.round(value)}px`
                 if (Math.round(end) === Math.round(playNow.source.currentTime)) {
                     clickOnNextPrev();
                 }
             }
             playNow.source.addEventListener('timeupdate', startSlider);
-            
+
         }
 
         const stopMusicRender = (domTrack) => {
@@ -160,16 +161,16 @@ const Music = () => {
         }
 
         const clickOnPlaylist = (domLiTrack, i) => {
-                if (playNow) {
-                    if (playNow.name === e.target.textContent) {
-                        playNow.source.paused ? playMusicRender(musicPlaylist[i], domLiTrack) : stopMusicRender(domLiTrack)
-                    } else {
-                        stopMusicRender(domLiTrack);
-                        playMusicRender(musicPlaylist[i], domLiTrack);
-                    }
+            if (playNow) {
+                if (playNow.name === e.target.textContent) {
+                    playNow.source.paused ? playMusicRender(musicPlaylist[i], domLiTrack) : stopMusicRender(domLiTrack)
                 } else {
+                    stopMusicRender(domLiTrack);
                     playMusicRender(musicPlaylist[i], domLiTrack);
                 }
+            } else {
+                playMusicRender(musicPlaylist[i], domLiTrack);
+            }
         }
         const clickOnPlay = () => {
             domPlaylistTracks.forEach((domLiTrack, i) => {
@@ -187,12 +188,12 @@ const Music = () => {
             if (!playNow) {
                 playMusicRender(musicPlaylist[iMusicStart], domPlaylistTracks[iMusicStart]);
             }
-            else  {
-                for (let index of musicPlaylist.keys()){
+            else {
+                for (let index of musicPlaylist.keys()) {
                     let iMusic = next ? index + 1 : index - 1
                     if (musicPlaylist[index] === playNow) {
-                        if (next && index === lastIndexTrack) {iMusic = 0};
-                        if (!next && index === 0) {iMusic = lastIndexTrack};
+                        if (next && index === lastIndexTrack) { iMusic = 0 };
+                        if (!next && index === 0) { iMusic = lastIndexTrack };
                         return playMusicRender(musicPlaylist[iMusic], domPlaylistTracks[iMusic]);
                     }
                 }
@@ -205,18 +206,18 @@ const Music = () => {
             muted ? domRange.classList.remove('active') : domRange.classList.add('active')
         }
 
-        domPlaylistTracks.forEach((domLiTrack, i) => { 
+        domPlaylistTracks.forEach((domLiTrack, i) => {
             if (domLiTrack === e.target) clickOnPlaylist(domLiTrack, i);
         });
 
-        
+
         switch (e.target) {
             case domPlay: return clickOnPlay();
             case domPrev: return clickOnNextPrev(false);
             case domNext: return clickOnNextPrev();
             case domVolume: return clickOnVolume();
         }
-
+        console.log(musicPlaylist, playNow)
     }
 }
 

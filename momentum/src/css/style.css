@@ -3,6 +3,27 @@
   src: url("../assets/fonts/Arial-MT.woff"); /* Путь к файлу со шрифтом */
  }
 
+ @keyframes fade {
+  from {
+    opacity: 0.3;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes show {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,6 +41,65 @@ body {
   background: center/cover, rgba(0, 0, 0, 0.5);
   background-blend-mode: multiply;
   transition: background-image 1s ease-in-out;
+}
+
+
+.show-module {
+  animation: show 0.3s ease forwards;
+}
+
+.hide-module {
+  animation: fade 0.3s ease forwards;
+}
+
+.hover-module {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  font-size: 16px;
+  color: #fff;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 300;
+  opacity: 0;
+  cursor: pointer;
+  visibility: hidden;
+  transition: 0.3s;
+
+}
+.hover-module.active:hover {
+  opacity: 1;
+}
+
+.hover-module.active {
+  opacity: 0.8;
+  visibility: visible;
+}
+
+.hide {
+  opacity: 0.3;
+  transition: 0.3s;
+}
+
+.hide .hover-module.active {
+  opacity: 0.8;
+}
+
+span.eye-off {
+  width: 14px;
+  height: 14px;
+  background-image: url('../assets/svg/eye-off.svg');
+  background-position: center;
+  background-size: contain;
+}
+
+span.eye {
+  width: 14px;
+  height: 14px;
+  background-image: url('../assets/svg/eye.svg');
+  background-position: center;
+  background-size: contain;
 }
 
 .header {
@@ -299,6 +379,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   flex-direction: column;
   align-items: center;
   position: absolute;
+  min-width: 400px;
   left: 50%;
   margin-left: -200px;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -329,21 +410,27 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 }
 
 .options-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: absolute;
+  opacity: 0;
+  top: 36px;
+  visibility: hidden;
+  min-width: 400px;
+  padding: 8px;
+  animation: fade 0.3s ease forwards;
+}
+
+.options-wrapper.active {
+  position: relative;
   padding: 8px;
   min-width: 400px;
   height: 20%;
+  top: 0;
   background: rgba(136, 136, 136, 0.5);
   border-radius: 8px;
   border: solid 1px rgb(138, 138, 138);
-  opacity: 0;
-  transition: 0.3s;
-}
-
-.active {
   opacity: 1;
+  visibility: visible;
+  animation: show 0.3s ease forwards;
 }
 
 .options-wrapper select {
@@ -364,7 +451,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   padding: 10px;
 }
 
-.weather {
+.weather_wrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -453,24 +540,21 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   margin-bottom: 20px;
 }
 
-.greeting-container {
+.greeting_wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: stretch;
+  justify-content: center;
   align-items: center;
   min-height: 48px;
-  width: 100vw;
   font-size: 40px;
 }
 
 .greeting {
-  flex: 1;  
   padding: 10px;
   text-align: right;
 }
 
 .name {
-  flex: 1;
   max-width: 50%;
   padding: 10px;
   font-size: 40px;
@@ -529,4 +613,119 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
     font-size: 32px;
     padding: 5px;
   }
+}
+
+
+
+.todo_wrapper {
+  display: flex;
+  position: absolute;
+  justify-content: flex-end;
+  right: 26px;
+  bottom: 20px;
+  width: 360px;
+}
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+.todo .todo_desk {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #fff;
+  color: #000;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.todo .todo_desk::after {
+  content: '';
+  position: absolute;
+  bottom: 42px;
+  right: 30px;
+  border: 10px solid transparent; 
+  border-top: 10px solid rgb(255, 255, 255);
+}
+
+.todo_desk .todo_head {
+  display: flex;
+  justify-content: space-between;
+  height: 68px;
+  padding: 10px 23px;
+  align-items: center;
+
+}
+.todo_head .todo_drop {
+  display: flex;
+
+}
+.todo_head .todo_settings {
+  display: flex;
+  border-radius: 50%;
+  cursor: pointer;
+  background: #fff;
+  transition: 0.3s;
+}
+.todo_head .todo_settings:hover {
+  background: #e9e9e9;
+}
+.todo_head .todo_settings:active {
+  background: #d8d8d8;
+}
+.todo_head .todo_settings span {
+  background: url('../assets/svg/more.svg');
+  width: 32px;
+  height: 32px;
+  background-position: center;
+  background-size: cover;
+}
+.todo_desk .todo_list {
+  display: flex;
+  padding: 0px 20px;
+
+}
+
+.todo_desk .todo_list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.todo_desk .todo_list li {
+  display: flex;
+  gap: 8px;
+}
+.todo_list .todo_input {
+  display: flex;
+
+}
+.todo_desk .todo_addToDo {
+  display: flex;
+
+}
+.todo_addToDo .todo_textAdd {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 22px;
+  padding: 20px;
+  border-radius: 4px;
+}
+.todo_btn {
+  display: flex;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px 20px;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.todo_btn:hover {
+  opacity: 1;
 }

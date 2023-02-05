@@ -6,10 +6,11 @@ const InputName = (classInput, lang = 'en') => {
 
     const input = document.querySelector(classInput);
     input.placeholder = textPlaceholder[lang];
-
+    console.dir();
     const setupName = (key) => {
         input.addEventListener('input', (e) => {
-            localStorage.setItem(key, e.target.value)
+            localStorage.setItem(key, e.target.value);
+            input.value.length ? input.size = input.value.length + 2 : input.size = input.placeholder.length + 2
         })
     }
     
@@ -19,6 +20,7 @@ const InputName = (classInput, lang = 'en') => {
 
     setupName('name');
     findNameInStorage('name');
+    input.value.length ? input.size = input.value.length + 2 : input.size = input.placeholder.length + 2
 }
 
 export default InputName
