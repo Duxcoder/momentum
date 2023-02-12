@@ -120,27 +120,32 @@
               <input class="select__input" type="hidden" name="">
               <div class="select_head">Choice</div>
                 <ul class="select_list">
-                  <li class="select_item">1</li>
-                  <li class="select_item">2</li>
-                  <li class="select_item">3</li>
+                  <li class="select_item">Inbox</li>
+                  <li class="select_item">Today</li>
+                  <li class="select_item">Done</li>
                 </ul>
       
               </div>
               <div class="todo_settings"><span></span></div>
             </div>
             <div class="todo_list">
-              <ul>
-                <li>
-                  <input type="checkbox" name="kek" class="todo_input" />
-                  <label for="kek">Scales</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="kek" class="todo_input" />
-                  <label for="kek">Scales</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="kek" class="todo_input" />
-                  <label for="kek">Scales</label>
+              <ul class="ul_todo">
+                <li class="li_todo">
+                  <input type="checkbox" name="${todoItem.id}" class="todo_input" />
+                  <div class="optionsTodo">
+                    <div class="btn_options">
+                      <span></span>
+                    </div>
+                    <div class="wrapper_options">
+                      <ul class="todo_options_list">
+                        <li class="todo_option_item">Edit</li>
+                        <li class="todo_option_item">Move to Inbox</li>
+                        <li class="todo_option_item">Move to Today</li>
+                        <li class="todo_option_item">Delete</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <label for="${todoItem.id}">TODO</label>
                 </li>
               </ul>
             </div>
@@ -148,7 +153,7 @@
               <input type="text" class="todo_textAdd" />
             </div>
           </div>
-          <button class="todo_btn">ToDo</button>
+          <div class="todo_btn">ToDo</div>
         </div>
       </div>
     </footer>
