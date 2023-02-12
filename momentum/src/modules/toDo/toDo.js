@@ -217,5 +217,12 @@ const ToDo = () => {
     }
     customSelect('.todo_drop', '.select_head', '.active', '.select_list', '.active', '.select_item', selected);
 
+    const $btnTodo = document.querySelector('.todo_btn');
+    const $desk = document.querySelector('.todo_desk')
+    $btnTodo.addEventListener('click', e => {
+        $desk.classList.toggle('active');
+    })
+
+
 }
 export default ToDo

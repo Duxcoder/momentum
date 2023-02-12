@@ -643,6 +643,11 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   color: #000;
   border-radius: 4px;
   margin-bottom: 20px;
+  animation: fade 0.3s ease forwards;
+}
+.todo .todo_desk.active {
+  animation: show 0.3s ease forwards;
+  
 }
 
 .todo .todo_desk::after {
