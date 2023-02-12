@@ -10,16 +10,31 @@ const Options = (updateFunction, lang) => {
         weather: false,
         quotes: false,
         music: false,
-        language: 'ru',
+        language: lang,
     };
-    // let hideList = [];
-    lang === 'ru' ? textHideView = ['Скрыть', 'Показать'] : textHideView = ['Hide', 'View']
+    let l = (block) => {
+        let l = options.language === 'ru' ? 0 : 1
+        switch (block) {
+            case 'option': return ["НАСТРОЙКИ", "OPTIONS"][l]; break;
+            case 'language': return ['Выбор языка','Language'][l]; break;
+            case 'background': return ['Источник изображений', 'Background images from'][l]; break;
+            case 'tags': return ['Выборка изображений по тегу', 'Select image by tag'][l]; break;
+            case 'rus': return ['Русский', 'Russian'][l]; break;
+            case 'eng': return ['Английский', 'English'][l]; break;
+        }
+    };
+    
     let returnData = {
         language: lang,
     };
     const wrapper = document.querySelector('.options-wrapper');
     const btn = document.querySelector('.btn-options');
     let hideModules = [];
+    const $textOption = btn.querySelector('span');
+    const $textOptionItems = wrapper.querySelectorAll('.select-title');
+    const $languageBlock = wrapper.querySelector('.language-block');
+    const $optionLanguages = $languageBlock.querySelectorAll('option');
+   
     const modules = {
         music: document.querySelector('.player_wrapper'),
         weather: document.querySelector('.weather'),
@@ -34,7 +49,7 @@ const Options = (updateFunction, lang) => {
             options[key] = arrReloadModules.includes(key);
             key === 'language' ? options[key] = language : null
         }
-    }
+    };
     const toggleDeleteElements = () => {
         for (let key in modules) {
             const hideElement = hideModules.find(item => item === modules[key]);
@@ -46,7 +61,7 @@ const Options = (updateFunction, lang) => {
         const existHideBlock = domElement.querySelector('.hover-module');
         if (existHideBlock) {
             existHideBlock.classList.remove('active');
-            setTimeout(() => existHideBlock.remove(), 300);
+            setTimeout(() => existHideBlock.remove(), 40);
         } else {
             const div = document.createElement('div');
             const span = document.createElement('span');
@@ -74,9 +89,7 @@ const Options = (updateFunction, lang) => {
             domElement.firstElementChild.style.transition = '0.3s';
             domElement.append(div);
             div.classList.add('active');
-
             div.addEventListener('click', e => {
-                console.log(hideModules);
                 if (hideModules.includes(domElement)) {
                     hideModules = hideModules.filter(mod => mod != domElement);
                     viewBlock();
@@ -87,7 +100,6 @@ const Options = (updateFunction, lang) => {
                 }
             })
         }
-
     }
     btn.addEventListener('click', () => {
         wrapper.classList.toggle('active');
@@ -98,8 +110,8 @@ const Options = (updateFunction, lang) => {
         toggleHideTarget(modules.time, {right: '-100px', top: '35%'});
         toggleHideTarget(modules.music, {right: '-70px', top: '50%'});
         toggleHideTarget(modules.quotes, {right: '-70px', top: '5%'});
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-        console.dir(audioContext)
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        console.dir(audioContext);
     });
 
     const selectLanguage = document.querySelector('.select-language')
@@ -107,8 +119,14 @@ const Options = (updateFunction, lang) => {
     selectLanguage.addEventListener('change', () => {
         options.language = selectLanguage.value;
         language = selectLanguage.value;
-        changeOptionsToReload(['greeting', 'calendar', 'weather', 'quotes'])
-        updateFunction(options)
+        changeOptionsLanguage();
+        changeOptionsToReload(['greeting', 'calendar', 'weather', 'quotes']);
+        updateFunction(options);
+        for (let key in modules) {
+            const textHide = modules[key].querySelector('.hover-module');
+            hideModules.includes(modules[key]) ? textHide.childNodes[0].textContent = textHideView[1] : textHide.childNodes[0].textContent = textHideView[0];
+        }
+
     })
 
     const selectBackground = document.querySelector('.select-background');
@@ -117,6 +135,19 @@ const Options = (updateFunction, lang) => {
         changeOptionsToReload(['backgroundSlider'])
         updateFunction(options)
     })
+
+    const changeOptionsLanguage = () => {
+        language === 'ru' ? textHideView = ['Скрыть', 'Показать'] : textHideView = ['Hide', 'View']
+        $textOption.textContent = l('option');
+        $textOptionItems[0].textContent = l('language');
+        $textOptionItems[1].textContent = l('background');
+        $textOptionItems[2].textContent = l('tags');
+        $optionLanguages[0].textContent = l('rus');
+        $optionLanguages[1].textContent = l('eng');
+    
+    }
+    changeOptionsLanguage();
+
     return returnData
 }
 

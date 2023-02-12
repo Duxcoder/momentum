@@ -216,7 +216,6 @@ const ToDo = () => {
         todo.renderToList(ul)
     }
     customSelect('.todo_drop', '.select_head', '.active', '.select_list', '.active', '.select_item', selected);
-    customSelect('.todo_drop', '.select_head', '.active', '.select_list', '.active', '.select_item', selected);
 
 }
 export default ToDo
