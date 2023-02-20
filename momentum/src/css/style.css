@@ -34,7 +34,7 @@
 body {
   min-width: 480px;
   min-height: 100vh;
-  font-family: 'Arial', sans-serif;
+  font-family: 'EB Garamond', serif;
   font-size: 16px;
   color: #fff;
   text-align: center;
@@ -43,7 +43,9 @@ body {
   transition: background-image 1s ease-in-out;
 }
 
-
+input { 
+  font-family: 'EB Garamond', serif;
+}
 .show-module {
   animation: show 0.3s ease forwards;
 }
@@ -110,6 +112,10 @@ span.eye {
   height: 30vh;
   min-height: 220px;  
   padding: 20px;
+}
+
+.player_wrapper {
+  position: relative;
 }
 
 .player {
@@ -219,7 +225,7 @@ span.eye {
 }
 .marquee{
   width: 300px;
-  font-size: 14px;
+  font-size: 18px;
   padding-bottom: 6px;
   color: #dddddd;
   white-space: nowrap;
@@ -461,7 +467,9 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   min-height: 180px;  
   text-align: left;
 }
-
+.weather {
+  position: relative;
+}
 .weather-error {
   margin-top: -10px;
 }
@@ -526,20 +534,27 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   background-image: url("../assets/svg/slider-next.svg");
 }
 
+.time_wrapper {
+  position: relative;
+}
 .time {
+  font-family: 'Roboto Mono', monospace;
   min-height: 124px;
   margin-bottom: 10px;
-  font-family: 'Arial-MT';
   font-size: 100px;
   letter-spacing: -4px;  
 }
-
+.date_wrapper {
+  position: relative;
+}
 .date {
   min-height: 28px;
   font-size: 24px;
   margin-bottom: 20px;
 }
-
+.greeting-container {
+  position: relative;
+}
 .greeting_wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -586,6 +601,9 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   background-image: url("../assets/svg/reload.svg");  
 }
 
+.quote_wrapper{
+  position: relative;
+}
 .quote {
   min-height: 32px;
 }
@@ -637,6 +655,8 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 .todo .todo_desk {
   display: flex;
   flex-direction: column;
+  position: absolute;
+  bottom: 40px;
   justify-content: space-evenly;
   width: 100%;
   background-color: #fff;
@@ -653,7 +673,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 .todo .todo_desk::after {
   content: '';
   position: absolute;
-  bottom: 42px;
+  bottom: -20px;
   right: 30px;
   border: 10px solid transparent; 
   border-top: 10px solid rgb(255, 255, 255);
@@ -777,6 +797,11 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   width: 18px;
   height: 18px;
 }
+
+.li_todo:last-child .optionsTodo:has(.active) {
+  bottom: 10px;
+}
+
 
 .li_todo:hover .optionsTodo .btn_options {
   display: flex;

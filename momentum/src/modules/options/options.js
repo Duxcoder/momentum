@@ -10,6 +10,7 @@ const Options = (updateFunction, lang) => {
         weather: false,
         quotes: false,
         music: false,
+        toDo: false,
         language: lang,
     };
     let l = (block) => {
@@ -41,13 +42,17 @@ const Options = (updateFunction, lang) => {
         time: document.querySelector('.time_wrapper'),
         calendar: document.querySelector('.date_wrapper'),
         greeting: document.querySelector('.greeting-container'),
-        quotes: document.querySelector('.quote_wrapper')
+        quotes: document.querySelector('.quote_wrapper'),
+        todo: document.querySelector('.todo_wrapper'),
     };
 
-    const changeOptionsToReload = (arrReloadModules) => {
+    const changeOptionsToReload = (arrReloadModules, opt) => {
         for (let key in options) {
             options[key] = arrReloadModules.includes(key);
             key === 'language' ? options[key] = language : null
+            if (opt) {
+                key === 'backgroundSlider' ? options[key] = opt : null
+            }
         }
     };
     const toggleDeleteElements = () => {
@@ -85,7 +90,6 @@ const Options = (updateFunction, lang) => {
                 domElement.firstElementChild.classList.remove('hide');
             }
             hideModules.includes(domElement) ? hideBlock() : viewBlock();
-            domElement.style.position = 'relative';
             domElement.firstElementChild.style.transition = '0.3s';
             domElement.append(div);
             div.classList.add('active');
@@ -110,8 +114,8 @@ const Options = (updateFunction, lang) => {
         toggleHideTarget(modules.time, {right: '-100px', top: '35%'});
         toggleHideTarget(modules.music, {right: '-70px', top: '50%'});
         toggleHideTarget(modules.quotes, {right: '-70px', top: '5%'});
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        console.dir(audioContext);
+        toggleHideTarget(modules.todo, {left: '44%', top: '0'});
+        // const audioContext = new (window.AudioContext || window.webkitAudioContext)();           
     });
 
     const selectLanguage = document.querySelector('.select-language')
@@ -120,8 +124,8 @@ const Options = (updateFunction, lang) => {
         options.language = selectLanguage.value;
         language = selectLanguage.value;
         changeOptionsLanguage();
-        changeOptionsToReload(['greeting', 'calendar', 'weather', 'quotes']);
-        updateFunction(options);
+        changeOptionsToReload(['greeting', 'calendar', 'weather', 'quotes', 'toDo', 'music']);
+        updateFunction(options, true);
         for (let key in modules) {
             const textHide = modules[key].querySelector('.hover-module');
             hideModules.includes(modules[key]) ? textHide.childNodes[0].textContent = textHideView[1] : textHide.childNodes[0].textContent = textHideView[0];
@@ -131,8 +135,11 @@ const Options = (updateFunction, lang) => {
 
     const selectBackground = document.querySelector('.select-background');
     selectBackground.addEventListener('change', () => {
-        options.backgroundSlider = selectBackground.value.toLowerCase();
-        changeOptionsToReload(['backgroundSlider'])
+        let opt = {}
+        opt.source = selectBackground.value.toLowerCase();
+        opt.update = true;
+        changeOptionsToReload(['backgroundSlider'], opt)
+        console.log('options in option', options)
         updateFunction(options)
     })
 

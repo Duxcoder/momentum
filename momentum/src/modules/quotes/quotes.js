@@ -1,4 +1,6 @@
-const Quotes = () => {
+import jsonRus from '../quotes/quotesRu.json';
+
+const Quotes = (lang) => {
     const randomNum = (min, max) => {
         let random = min + Math.random() * (max + 1 - min);
         return Math.floor(random);
@@ -10,7 +12,7 @@ const Quotes = () => {
         quote.textContent = text;
         author.textContent = authorText;
     }
-    fetch('https://type.fit/api/quotes')
+    fetch(lang === 'ru' ?  jsonRus : 'https://type.fit/api/quotes')
     .then(response => response.json())
     .then(data => {
         let quoteItem = data[randomNum(0, data.length - 1)];

@@ -221,4 +221,10 @@ const Music = () => {
     }
 }
 
-export default Music
+const translateMusic = (lang) => {
+    const play = document.querySelector('.play');
+    const name = document.querySelector('.marquee')
+    const changeName = () => name.textContent = lang === 'ru' ? 'Выберите трек для воспроизведения' : 'Select a track to play'
+    !play.classList.contains('pause') && changeName();
+}
+export {Music, translateMusic}

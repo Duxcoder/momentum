@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MOMENTUM | Duxcoder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
   </head>
   <body>
     <header class="header">
@@ -119,18 +122,17 @@
               <input class="select__input" type="hidden" name="">
               <div class="select_head">Choice</div>
                 <ul class="select_list">
-                  <li class="select_item">Inbox</li>
-                  <li class="select_item">Today</li>
-                  <li class="select_item">Done</li>
+                  <li data-optionItem="Inbox" class="select_item">Inbox</li>
+                  <li data-optionItem="Today" class="select_item">Today</li>
+                  <li data-optionItem="Done" class="select_item">Done</li>
                 </ul>
-      
               </div>
               <div class="todo_settings"><span></span></div>
             </div>
             <div class="todo_list">
               <ul class="ul_todo">
                 <li class="li_todo">
-                  <input type="checkbox" name="${todoItem.id}" class="todo_input" />
+                  <input type="checkbox" name="todoItem" class="todo_input" />
                   <div class="optionsTodo">
                     <div class="btn_options">
                       <span></span>
@@ -144,7 +146,7 @@
                       </ul>
                     </div>
                   </div>
-                  <label for="${todoItem.id}">TODO</label>
+                  <label for="todoItem">TODO</label>
                 </li>
               </ul>
             </div>

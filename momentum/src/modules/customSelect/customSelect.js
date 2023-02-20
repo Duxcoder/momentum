@@ -8,8 +8,8 @@ const customSelect = (parentWrapperClass, headClass, headActiveClass, listClass,
     $head.textContent = $listItems[0].textContent // default
     $wrapper.addEventListener('click', e => {
         if (e.target.closest(headClass)) {
-            $list.classList.toggle(listActiveClass.slice(1))
-            $head.classList.toggle(headActiveClass.slice(1))
+          $list.classList.toggle(listActiveClass.slice(1))
+          $head.classList.toggle(headActiveClass.slice(1))
         }
         $listItems.forEach(item => {
             if (e.target.closest(listItemClass) === item) {

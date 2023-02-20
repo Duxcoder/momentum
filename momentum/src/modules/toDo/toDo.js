@@ -1,8 +1,28 @@
+
 import customSelect from "../customSelect/customSelect";
 
-const todoList = document.querySelector('.todo_list');
-const ul = todoList.querySelector('ul');
-const ToDo = () => {
+const ToDo = (lang) => {
+    const todoList = document.querySelector('.todo_list');
+    const ul = todoList.querySelector('ul');
+    const text = {
+        'ru': [
+                ['Редактировать', 'Переместить в Черновик', 'Переместить в Сегодня', 'Переместить в Выполнено', 'Удалить'],
+                ['Черновик', 'Сегодня', 'Выполнено'],
+                ['Добавить запись', 'Список дел']
+              ],
+        'en': [
+                ['Edit', 'Move to Inbox', 'Move to Today', 'Move to Done', 'Delete'],
+                ['Inbox', 'Today', 'Done'],
+                ['new Todo', 'ToDo']
+              ],
+    }
+    const selectItems = document.querySelectorAll('.select_item');
+    selectItems.forEach((item, i) => {
+        item.textContent = text[lang][1][i];
+    })
+    const mainBtn = document.querySelector('.todo_btn')
+
+    mainBtn.textContent = text[lang][2][1];
     class Todo {
         constructor() {
             this.$todos = [];
@@ -28,11 +48,11 @@ const ToDo = () => {
             </div>
             <div class="wrapper_options">
               <ul class="todo_options_list">
-                <li class="todo_option_item" data-option="edit">Edit</li>
-                <li class="todo_option_item" data-option="moveInbox">Move to Inbox</li>
-                <li class="todo_option_item" data-option="moveToday">Move to Today</li>
-                <li class="todo_option_item" data-option="moveDone">Move to Done</li>
-                <li class="todo_option_item" data-option="delete">Delete</li>
+                <li class="todo_option_item" data-option="edit">${text[lang][0][0]}</li>
+                <li class="todo_option_item" data-option="moveInbox">${text[lang][0][1]}</li>
+                <li class="todo_option_item" data-option="moveToday">${text[lang][0][2]}</li>
+                <li class="todo_option_item" data-option="moveDone">${text[lang][0][3]}</li>
+                <li class="todo_option_item" data-option="delete">${text[lang][0][4]}</li>
               </ul>
             </div>
           </div>
@@ -42,9 +62,11 @@ const ToDo = () => {
             this.id += 1;
         }
         addFromLocalStorage(todoItem) {
-
             let li = document.createElement('li');
-            li.classList.add('li_todo')
+            li.classList.add('li_todo');
+            
+            const checklang = document.querySelector('.select-language');
+
             li.innerHTML = `<input type="checkbox" name="${todoItem.id}" class="todo_input" />
             <div class="optionsTodo" data-options="${todoItem.id}">
             <div class="btn_options">
@@ -52,11 +74,11 @@ const ToDo = () => {
             </div>
             <div class="wrapper_options">
               <ul class="todo_options_list">
-                <li class="todo_option_item" data-option="edit">Edit</li>
-                <li class="todo_option_item" data-option="moveInbox">Move to Inbox</li>
-                <li class="todo_option_item" data-option="moveToday">Move to Today</li>
-                <li class="todo_option_item" data-option="moveDone">Move to Done</li>
-                <li class="todo_option_item" data-option="delete">Delete</li>
+              <li class="todo_option_item" data-option="edit">${text[lang][0][0]}</li>
+              <li class="todo_option_item" data-option="moveInbox">${text[lang][0][1]}</li>
+              <li class="todo_option_item" data-option="moveToday">${text[lang][0][2]}</li>
+              <li class="todo_option_item" data-option="moveDone">${text[lang][0][3]}</li>
+              <li class="todo_option_item" data-option="delete">${text[lang][0][4]}</li>
               </ul>
             </div>
           </div>
@@ -75,7 +97,7 @@ const ToDo = () => {
         }
 
         changeTab(index, strTab) {
-            this.$todos[index].tab  = strTab
+            this.$todos[index].tab = strTab
             // this.$todos.splice(index, 1, this.checkedTodo(updateItem));
         }
         checkedTodo(todoItem) {
@@ -97,7 +119,6 @@ const ToDo = () => {
             }
             this.updateLocalStorage();
             return todoItem
-
         }
 
         toggleCheckedTodo(updateItem) {
@@ -115,14 +136,14 @@ const ToDo = () => {
         editOn(index) {
             this.edit = true
             const label = this.$todos[index].domItem.querySelector('label');
-            this.$todos[index].domItem.firstElementChild.disabled = this.edit; 
+            this.$todos[index].domItem.firstElementChild.disabled = this.edit;
             label.contentEditable = this.edit;
             label.classList.add('active');
             label.focus();
             const selection = window.getSelection();
             const range = document.createRange();
             range.selectNodeContents(label);
-            range.collapse(false); 
+            range.collapse(false);
             selection.removeAllRanges();
             selection.addRange(range);
             label.addEventListener('input', e => {
@@ -133,10 +154,10 @@ const ToDo = () => {
             label.addEventListener("blur", () => {
                 this.edit = false
                 label.contentEditable = "false";
-                this.$todos[index].domItem.firstElementChild.disabled = false; 
+                this.$todos[index].domItem.firstElementChild.disabled = false;
                 label.contentEditable = false;
                 label.classList.remove('active');
-              });
+            });
         }
 
         getTodos() {
@@ -146,8 +167,10 @@ const ToDo = () => {
         renderToList(parent) {
             parent.innerHTML = '';
             this.$todos.forEach((todo, i) => {
-                if (this.tab === todo.tab)
                 parent.append(todo.domItem)
+                todo.domItem.style.display = 'flex'
+                if (this.tab !== todo.tab)
+                    todo.domItem.style.display = 'none'
             })
             this.updateLocalStorage();
         }
@@ -159,7 +182,7 @@ const ToDo = () => {
     todo.renderToList(ul);
     const $textInput = document.querySelector('.todo_textAdd');
     const $ItemList = document.querySelector('.todo_list');
-    $textInput.placeholder = 'new Todo';
+    $textInput.placeholder = text[lang][2][0]
 
     $textInput.addEventListener("keydown", function handler(event) {
         if (event.key === "Enter") {
@@ -172,7 +195,7 @@ const ToDo = () => {
     });
 
     const checkTodoListener = () => {
-        $ItemList.addEventListener('click', e => {
+        const handler = (e) => {
             todo.getTodos().forEach((item, i) => {
                 let btn = item.domItem.querySelector('.optionsTodo');
                 let options = btn.querySelectorAll('[data-option]');
@@ -186,13 +209,13 @@ const ToDo = () => {
                                 case 'delete': todo.deleteTodo(i); todo.renderToList(ul); break;
                                 case 'moveInbox': todo.changeTab(i, 'Inbox'); todo.renderToList(ul); break;
                                 case 'moveToday': todo.changeTab(i, 'Today'); todo.renderToList(ul); break;
-                                case 'moveDone': todo.changeTab(i, 'Done');  todo.renderToList(ul); break;
+                                case 'moveDone': todo.changeTab(i, 'Done'); todo.renderToList(ul); break;
                             }
                         }
-                    })  
+                    })
                 }
-                console.log(todo.edit)
-                if (!todo.edit) {    
+                
+                if (!todo.edit) {
                     if (item.domItem.firstElementChild.contains(e.target) || item.domItem.lastElementChild.contains(e.target)) {
                         todo.toggleCheckedTodo(item);
                     }
@@ -201,17 +224,17 @@ const ToDo = () => {
                     btn.firstElementChild.classList.toggle('active');
                     btn.lastElementChild.classList.toggle('active');
                 }
-               
-
-
             })
-        })
+        }
+        
+            $ItemList.addEventListener('click', handler );
+        
 
     }
 
     checkTodoListener();
     const selected = (selectTab) => {
-        todo.tab = selectTab.textContent
+        todo.tab = selectTab.dataset.optionitem
         console.log(todo.getTodos());
         todo.renderToList(ul)
     }
@@ -219,10 +242,46 @@ const ToDo = () => {
 
     const $btnTodo = document.querySelector('.todo_btn');
     const $desk = document.querySelector('.todo_desk')
-    $btnTodo.addEventListener('click', e => {
-        $desk.classList.toggle('active');
-    })
-
-
+    const activeDesk = () => $desk.classList.toggle('active');
+    
+    $btnTodo.addEventListener('click', activeDesk)
+    
 }
-export default ToDo
+
+const translateTodo = (lang) => {
+    const text = {
+        'ru': [
+                ['Редактировать', 'Переместить в Черновик', 'Переместить в Сегодня', 'Переместить в Выполнено', 'Удалить'],
+                ['Черновик', 'Сегодня', 'Выполнено'],
+                ['Добавить запись', 'Список дел']
+              ],
+        'en': [
+                ['Edit', 'Move to Inbox', 'Move to Today', 'Move to Done', 'Delete'],
+                ['Inbox', 'Today', 'Done'],
+                ['new Todo', 'ToDo']
+              ],
+    }
+    const selectItems = document.querySelectorAll('.select_item');
+    selectItems.forEach((item, i) => {
+        item.textContent = text[lang][1][i];
+    })
+    const mainBtn = document.querySelector('.todo_btn')
+    mainBtn.textContent = text[lang][2][1];
+    const optionsItems = document.querySelectorAll('.todo_option_item');
+    optionsItems.forEach(item => {
+        switch (item.dataset.option) {
+            case 'edit': item.textContent = text[lang][0][0]; break;
+            case 'delete': item.textContent = text[lang][0][1]; break;
+            case 'moveInbox': item.textContent = text[lang][0][2]; break;
+            case 'moveToday': item.textContent = text[lang][0][3]; break;
+            case 'moveDone': item.textContent = text[lang][0][4]; break;
+        }
+    })
+    const selectHead = document.querySelector('.select_head');
+    selectHead.textContent = lang === 'ru' ? text['ru'][1][text['en'][1].findIndex(text => text === selectHead.textContent)] : text['en'][1][text['ru'][1].findIndex(text => text === selectHead.textContent)]
+    const $textInput = document.querySelector('.todo_textAdd');
+    $textInput.placeholder = text[lang][2][0]
+}
+
+
+export {ToDo, translateTodo}

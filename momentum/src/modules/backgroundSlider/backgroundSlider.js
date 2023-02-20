@@ -1,8 +1,7 @@
 import timesOfDay from "../greetings/timesOfDay"
 import addingZeroFirst from "../time/addingZeroFirst"
 
-const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceImages}) => {
-     
+const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceImages, update = false}) => {
     const path = "https://raw.githubusercontent.com/Duxcoder/stage1-tasks/assets/images"
     let slideNumberNow = 0;
     const randomNumber = (maxNumber) => {
@@ -24,11 +23,13 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
     }
 
     const Render = (source, number, arr) => {
+        console.log(source)
         const url = `url(${createUrl(source, number, arr)})`
         const img = document.createElement('img');
         img.onload = () => { 
             document.body.style.backdropFilter = 'blur(0px)'
             document.body.style.backgroundImage = url; // по загрузке img отобразится фон
+            console.log(source, url)
         }
         img.src = createUrl(source, number, arr);
         slideNumberNow = number;
@@ -39,6 +40,7 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
           arrowPrev = document.querySelector(classArrowPrev);
 
     const clickNext = () => {
+        console.log(images)
         if (sourceImages === 'github') {
             const number = +slideNumberNow + 1;
             if (number > 20) return Render(sourceImages, addingZeroFirst(1), images)
@@ -46,6 +48,7 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
         }
         return Render(sourceImages, addingZeroFirst(randomNumber(20)), images)
     }
+
     const clickPrev = () => {
         if (sourceImages === 'github') {
             const number = +slideNumberNow - 1;
@@ -55,13 +58,13 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
         return Render(sourceImages, addingZeroFirst(randomNumber(20)), images)
     }
 
-    wrapper.addEventListener('click', (e) => {
+    !update && wrapper.addEventListener('click', (e) => {
         if (e.target === arrowNext) clickNext()
         if (e.target === arrowPrev) clickPrev()
     })
 
 
-    let url = `https://api.unsplash.com/search/photos?page=${randomNumber(500)}&orientation=landscape&query=${time}-nature&per_page=20`
+    let url = `https://api.unsplash.com/search/photos?page=${randomNumber(20)}&orientation=landscape&query=${time},cat&per_page=20`
     fetch(url, {
         headers: {
             Authorization: 'Client-ID GDoYYGQvzZ1r_y22PViJEMUeWI3i6aqIRxMkQT9aGm8'
@@ -74,7 +77,10 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
         })
     })
     .then(() => {
+        console.log(sourceImages)
         Render(sourceImages, firstNumber, images);
     })
+
+    
 }
 export default BackgroundSlider
