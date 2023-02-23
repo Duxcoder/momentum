@@ -727,14 +727,17 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   display: flex;
   gap: 4px;
   width: 100%;
+  transform: translateX(0px);
+  opacity: 1;
+  transition: 0.3s;
 }
 
 .li_todo label {
   text-align: left;
   outline: none;
   padding: 4px 6px;
-
 }
+
 .li_todo label.active {
   color: #4e4e4e;
   border-radius: 7px;
@@ -742,6 +745,10 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   background: #fafafa;
 }
 
+.todo_desk .todo_list .li_todo.hide {
+  transform: translateX(40px);
+  opacity: 0;
+}
 
 .todo_list .todo_input {
   display: flex;

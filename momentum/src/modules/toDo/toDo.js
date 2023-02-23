@@ -28,7 +28,8 @@ const ToDo = (lang) => {
             this.$todos = [];
             this.tab = 'Inbox';
             this.id = 0;
-            this.edit = false
+            this.edit = false;
+            this.lang = lang
         }
 
         createTodo(todo) {
@@ -169,6 +170,7 @@ const ToDo = (lang) => {
             this.$todos.forEach((todo, i) => {
                 parent.append(todo.domItem)
                 todo.domItem.style.display = 'flex'
+                todo.domItem.classList.remove('hide')
                 if (this.tab !== todo.tab)
                     todo.domItem.style.display = 'none'
             })
@@ -216,9 +218,17 @@ const ToDo = (lang) => {
                 }
                 
                 if (!todo.edit) {
+                    const timeOutHide = () => {
+                        if (todo.tab !== 'Done') {
+                            item.domItem.classList.add('hide')
+                        }
+                        setTimeout(() => {todo.renderToList(ul)}, 400)
+                    }
                     if (item.domItem.firstElementChild.contains(e.target) || item.domItem.lastElementChild.contains(e.target)) {
                         todo.toggleCheckedTodo(item);
+                        item.checked ? (todo.changeTab(i, 'Done'), timeOutHide()): null
                     }
+                    
                 }
                 if (btn.firstElementChild.contains(e.target)) {
                     btn.firstElementChild.classList.toggle('active');
@@ -267,16 +277,27 @@ const translateTodo = (lang) => {
     })
     const mainBtn = document.querySelector('.todo_btn')
     mainBtn.textContent = text[lang][2][1];
-    const optionsItems = document.querySelectorAll('.todo_option_item');
-    optionsItems.forEach(item => {
-        switch (item.dataset.option) {
-            case 'edit': item.textContent = text[lang][0][0]; break;
-            case 'delete': item.textContent = text[lang][0][1]; break;
-            case 'moveInbox': item.textContent = text[lang][0][2]; break;
-            case 'moveToday': item.textContent = text[lang][0][3]; break;
-            case 'moveDone': item.textContent = text[lang][0][4]; break;
+    const inputText = document.querySelector('.todo_textAdd');
+    inputText.addEventListener('keydown', (event) => {
+        if (event.key === "Enter") {
+            console.log('Enter')
+            changeOptionLiLang()
         }
     })
+    const changeOptionLiLang = () => {
+        const optionsItems = document.querySelectorAll('.todo_option_item');
+        optionsItems.forEach(item => {
+            switch (item.dataset.option) {
+                case 'edit': item.textContent = text[lang][0][0]; break;
+                case 'moveInbox': item.textContent = text[lang][0][1]; break;
+                case 'moveToday': item.textContent = text[lang][0][2]; break;
+                case 'moveDone': item.textContent = text[lang][0][3]; break;
+                case 'delete': item.textContent = text[lang][0][4]; break;
+            }
+        })
+    }
+    changeOptionLiLang()
+    
     const selectHead = document.querySelector('.select_head');
     selectHead.textContent = lang === 'ru' ? text['ru'][1][text['en'][1].findIndex(text => text === selectHead.textContent)] : text['en'][1][text['ru'][1].findIndex(text => text === selectHead.textContent)]
     const $textInput = document.querySelector('.todo_textAdd');
