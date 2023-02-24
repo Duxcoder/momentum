@@ -15,7 +15,7 @@ let optionSlider = {
     classWrapper: '.main',
     classArrowNext: '.slide-next',
     classArrowPrev: '.slide-prev',
-    sourceImages: 'github',
+    sourceImages: localStorage.getItem('bgSource') ? localStorage.getItem('bgSource').toLowerCase() : 'github',
     update: false
 }
 const defCity = (locale) => {

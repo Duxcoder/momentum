@@ -132,17 +132,19 @@ const Options = (updateFunction, lang) => {
         }
 
     })
-
     const selectBackground = document.querySelector('.select-background');
+    if (localStorage.getItem('bgSource')) {selectBackground.value = localStorage.getItem('bgSource')}
     selectBackground.addEventListener('change', () => {
-        let opt = {}
-        opt.source = selectBackground.value.toLowerCase();
-        opt.update = true;
-        changeOptionsToReload(['backgroundSlider'], opt)
-        console.log('options in option', options)
-        updateFunction(options)
+        localStorage.setItem('bgSource', selectBackground.value)
+        // let opt = {}
+        // opt.source = selectBackground.value.toLowerCase();
+        // opt.update = true;
+        // changeOptionsToReload(['backgroundSlider'], opt)
+        // console.log('options in option', options)
+        // updateFunction(options)
     })
 
+    
     const changeOptionsLanguage = () => {
         language === 'ru' ? textHideView = ['Скрыть', 'Показать'] : textHideView = ['Hide', 'View']
         $textOption.textContent = l('option');

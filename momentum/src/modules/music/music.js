@@ -1,4 +1,4 @@
-import bird from '../../assets/sounds/bird-music.mp3'
+import bird from '../../assets/sounds/bird music.mp3'
 import onime from '../../assets/sounds/onime-music.mp3'
 import wind from '../../assets/sounds/wind-music.mp3'
 import funeral from '../../assets/sounds/funeral-music.mp3'
