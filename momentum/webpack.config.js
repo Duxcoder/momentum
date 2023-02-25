@@ -22,7 +22,7 @@ const plugins = () => {
   }
 module.exports = {
     context: path.resolve(__dirname, 'src'),
-    mode: 'development',
+    mode: 'production',
     entry: {
         main: path.resolve(__dirname, '/index.js'),
     },
