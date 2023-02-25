@@ -119,10 +119,11 @@ const Options = (updateFunction, lang) => {
     });
 
     const selectLanguage = document.querySelector('.select-language')
-
+    selectLanguage.value = lang
     selectLanguage.addEventListener('change', () => {
         options.language = selectLanguage.value;
         language = selectLanguage.value;
+        localStorage.setItem('lang', selectLanguage.value)
         changeOptionsLanguage();
         changeOptionsToReload(['greeting', 'calendar', 'weather', 'quotes', 'toDo', 'music']);
         updateFunction(options, true);

@@ -10,7 +10,7 @@ import Quotes from './modules/quotes/quotes';
 import {Music, translateMusic} from './modules/music/Music';
 import {ToDo, translateTodo} from './modules/toDo/toDo';
 
-let locale = 'ru'
+let locale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'ru'
 let optionSlider = {
     classWrapper: '.main',
     classArrowNext: '.slide-next',

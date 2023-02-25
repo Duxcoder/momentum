@@ -70,16 +70,19 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
             url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5abab1b2fe7a0a280edbfb247662293e&tags=${tags ? tags : time }&extras=url_l&format=json&nojsoncallback=1`
          }
     }
-   createUrlApi();
-   let tags 
+   
     const selectTags = document.querySelector('.select-tags');
     const select = document.querySelector('.select-background');
+    let tags = localStorage.getItem('tags') ? (localStorage.getItem('tags'), selectTags.value = localStorage.getItem('tags')) : false;
+    
+    createUrlApi(tags);
     select.addEventListener('change', () => {
         sourceImages = localStorage.getItem('bgSource');
         images = []
-    const selectTags = document.querySelector('.select-tags');
-        if (selectTags.value !== '') {
-            tags = selectTags.value;
+    // const selectTags = document.querySelector('.select-tags');
+        // if (selectTags.value !== '') {
+            if (tags) {
+            selectTags.value = tags;
             createUrlApi(tags)
         } else {
             createUrlApi()
@@ -88,7 +91,7 @@ const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceI
         // Render(sourceImages, firstNumber, images);
     })
     selectTags.addEventListener('change', (e) => {
-        console.log(e.target.value)
+        localStorage.setItem('tags', e.target.value)
         tags = e.target.value
         images = [];
         createUrlApi(tags);
