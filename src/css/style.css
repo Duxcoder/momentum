@@ -43,7 +43,7 @@ body {
   transition: background-image 1s ease-in-out;
 }
 
-input { 
+input {
   font-family: 'EB Garamond', serif;
 }
 .show-module {
@@ -111,7 +111,7 @@ span.eye {
   align-items: flex-start;
   width: 100%;
   height: 30vh;
-  min-height: 220px;  
+  min-height: 220px;
   padding: 20px;
 }
 
@@ -137,6 +137,7 @@ span.eye {
 
 .play-item {
   position: relative;
+  width: fit-content;
   padding: 5px;
   padding-left: 20px;
   list-style: none;
@@ -151,7 +152,7 @@ span.eye {
 }
 
 .play-item::before {
-  content: "\2713";  
+  content: "\2713";
   position: absolute;
   left: 0;
   top: 2px;
@@ -175,7 +176,7 @@ span.eye {
   outline: 0;
   opacity: .8;
   cursor: pointer;
-  transition: .3s;  
+  transition: .3s;
 }
 
 .player-icon:hover,
@@ -188,7 +189,7 @@ span.eye {
 .slider-icon:active,
 .change-quote:active {
   border: 0;
-  outline: 0;  
+  outline: 0;
   transform: scale(1.1);
 }
 
@@ -329,7 +330,7 @@ input[type='range'].volume_range {
   cursor: pointer;
   transition: 0.3s;
   opacity: 0;
-  visibility: hidden; 
+  visibility: hidden;
 }
 
 input[type='range'].volume_range.active {
@@ -357,7 +358,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   width: 16px;
   height: 16px;
   border-radius: 8px;
-  
+
 }
 
 .select-point {
@@ -478,7 +479,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   align-items: flex-start;
   row-gap: 5px;
   width: 180px;
-  min-height: 180px;  
+  min-height: 180px;
   text-align: left;
 }
 .weather {
@@ -506,14 +507,14 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   padding: 5px;
   font-size: 20px;
   line-height: 24px;
-  color: #fff;  
+  color: #fff;
   border: 0;
   outline: 0;
   border-bottom: 1px solid #fff;
   background-color: transparent;
 }
 
-.city::placeholder {  
+.city::placeholder {
   font-size: 20px;
   color: #fff;
   opacity: .6;
@@ -527,7 +528,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   align-items: center;
   width: 100%;
   height: 40vh;
-  min-height: 260px;  
+  min-height: 260px;
   padding: 20px;
 }
 
@@ -556,7 +557,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   min-height: 124px;
   margin-bottom: 10px;
   font-size: 100px;
-  letter-spacing: -4px;  
+  letter-spacing: -4px;
 }
 .date_wrapper {
   position: relative;
@@ -606,13 +607,13 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   align-items: center;
   width: 100%;
   height: 30vh;
-  min-height: 160px;  
+  min-height: 160px;
   padding: 20px;
 }
 
 .change-quote {
   margin-bottom: 30px;
-  background-image: url("../assets/svg/reload.svg");  
+  background-image: url("../assets/svg/reload.svg");
 }
 
 .quote_wrapper{
@@ -629,7 +630,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 @media (max-width: 768px) {
   .time {
     min-height: 80px;
-    font-size: 72px;    
+    font-size: 72px;
   }
 
   .greeting-container {
@@ -681,7 +682,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 }
 .todo .todo_desk.active {
   animation: show 0.3s ease forwards;
-  
+
 }
 
 .todo .todo_desk::after {
@@ -689,7 +690,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   position: absolute;
   bottom: -20px;
   right: 30px;
-  border: 10px solid transparent; 
+  border: 10px solid transparent;
   border-top: 10px solid rgb(255, 255, 255);
 }
 
@@ -849,7 +850,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   display: flex;
   width: 0;
   height: 0;
-  gap: 16px; 
+  gap: 16px;
   background: #e4e4e4;
   font-size: 13px;
   color: #000000;
