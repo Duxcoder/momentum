@@ -139,12 +139,17 @@ span.eye {
   position: relative;
   width: fit-content;
   padding: 5px;
-  padding-left: 20px;
+  padding-left: 28px;
+  padding-right: 18px;
   list-style: none;
   opacity: .8;
   cursor: pointer;
   transition: .3s;
   z-index: 2;
+}
+
+.play-item.select {
+  background: rgb(163 155 155 / 40%);
 }
 
 .play-item:hover {
@@ -155,7 +160,8 @@ span.eye {
   content: "\2713";
   position: absolute;
   left: 0;
-  top: 2px;
+  top: 5px;
+  padding-left: 6px;
   font-weight: 900;
 }
 
@@ -198,6 +204,13 @@ span.eye {
   height: 40px;
   background-size: 40px 40px;
   background-image: url("../assets/svg/play.svg");
+}
+
+.stop {
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  background-image: url("../assets/svg/stop.svg");
 }
 
 .pause {
@@ -313,9 +326,8 @@ span.eye {
 .volume-regulator {
   display: flex;
   position: absolute;
-  width: 120px;
   box-sizing: content-box;
-  padding: 16px 0;
+  padding: 16px 10px;
   margin-left: 28px;
   padding-left: 14px;
 

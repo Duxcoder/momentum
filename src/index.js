@@ -7,8 +7,8 @@ import BackgroundSlider from './modules/backgroundSlider/backgroundSlider';
 import Options from './modules/options/options';
 import Weather from './modules/weather/weather';
 import Quotes from './modules/quotes/quotes';
-import {Music, translateMusic} from './modules/music/Music';
-import {ToDo, translateTodo} from './modules/toDo/toDo';
+import Music from './modules/music/music';
+import { ToDo, translateTodo } from './modules/toDo/toDo';
 
 let locale = localStorage.getItem('lang') ? localStorage.getItem('lang') : 'ru'
 let optionSlider = {
@@ -42,24 +42,22 @@ const changeSourceBackground = (source) => {
 }
 
 const update = (options, updateToDo = false) => {
-    let {greeting, time, calendar, backgroundSlider, weather, quotes, music, toDo, language} = options
+    let { greeting, time, calendar, backgroundSlider, weather, quotes, music, toDo, language } = options
 
     language ? changeLocal(options.language) : null
     backgroundSlider.update ? changeSourceBackground(backgroundSlider.source) : null
 
-    
-    if (greeting) { Greetings('.greeting', locale, '.name')} else {}
-    if (time) { Time('.time')} else {}
-    if (calendar) { Calendar('.date', locale)} else {}
-    if (backgroundSlider) { BackgroundSlider(optionSlider); console.log(optionSlider)} else {}
-    if (weather) { Weather(defCity(locale), locale)} else {}
-    if (quotes) {  Quotes(locale)} else {}
-    if (toDo) { updateToDo ? translateTodo(locale) : ToDo(locale)} else {}
-    if (music) {translateMusic(locale)}
+
+    if (greeting) { Greetings('.greeting', locale, '.name') } else { }
+    if (time) { Time('.time') } else { }
+    if (calendar) { Calendar('.date', locale) } else { }
+    if (backgroundSlider) { BackgroundSlider(optionSlider); console.log(optionSlider) } else { }
+    if (weather) { Weather(defCity(locale), locale) } else { }
+    if (quotes) { Quotes(locale) } else { }
+    if (toDo) { updateToDo ? translateTodo(locale) : ToDo(locale) } else { }
 }
 
 Options(update, locale)
-translateMusic(locale)
 Music()
 update(options);
 

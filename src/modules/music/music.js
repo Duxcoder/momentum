@@ -4,227 +4,199 @@ import wind from '../../assets/sounds/wind-music.mp3'
 import funeral from '../../assets/sounds/funeral-music.mp3'
 
 const Music = () => {
+    const domPlayer = document.querySelector('.player');
+    const domPlayerControls = domPlayer.querySelector('.player-controls');
+    const domPlay = domPlayerControls.querySelector('.play');
+    const domStop = domPlayerControls.querySelector('.stop');
+    const domNext = domPlayerControls.querySelector('.play-next');
+    const domPrev = domPlayerControls.querySelector('.play-prev');
+    const domVolume = domPlayerControls.querySelector('.volume');
+    const domRegulator = domPlayerControls.querySelector('.volume-regulator');
+    const domRange = domRegulator.querySelector('.volume_range');
+    const domTimeline = domPlayer.querySelector('.timeline');
+    const domTimelineActive = domTimeline.querySelector('.timeline_active');
+    const domSelectPoint = domTimeline.querySelector('.select-point');
+    const domSlider = domTimeline.querySelector('.player-slider');
+    const domNameMusic = domPlayer.querySelector('.marquee');
+    const domTime = domPlayer.querySelector('.time-music');
+    const domPlayList = domPlayer.querySelector('.play-list');
+    const styleDomTimeline = window.getComputedStyle(domTimeline);
+    const styleSelectP = window.getComputedStyle(domSelectPoint);
+
     const musicPlaylist = [
-        { name: 'The breath of the birds', music: bird },
-        { name: 'The groan of life', music: onime },
-        { name: 'Wind of unrest', music: wind },
-        { name: 'Death funeral', music: funeral }
+        { name: 'The breath of the birds', music: bird, id: 0 },
+        { name: 'The groan of life', music: onime, id: 1 },
+        { name: 'Wind of unrest', music: wind, id: 2 },
+        { name: 'Death funeral', music: funeral, id: 3 }
     ];
-    musicPlaylist.forEach(item => item.source = new Audio(item.music));
     let playNow;
     let domPlaylistTracks = [];
     let muted = false;
     let volumeLevel = 0.5;
-    const domPlay = document.querySelector('.play');
-    const domNext = document.querySelector('.play-next');
-    const domPrev = document.querySelector('.play-prev');
-    const domRegulator = document.querySelector('.volume-regulator');
-    const domPlayerControls = document.querySelector('.player-controls')
-    const domVolume = document.querySelector('.volume');
-    const domRange = document.querySelector('.volume_range');
-    const domTimeline = document.querySelector('.timeline');
-    const domTimelineActive = document.querySelector('.timeline_active')
-    const styleDomTimeline = window.getComputedStyle(domTimeline);
-    const domSlider = document.querySelector('.player-slider');
-    const domNameMusic = document.querySelector('.marquee');
-    const domTime = document.querySelector('.time-music');
-    const domSelectPoint = document.querySelector('.select-point');
-    const styleSelectP = window.getComputedStyle(domSelectPoint);
 
-    const getTime = (source) => {
-        const isZero = (num) => num < 10 ? `0${num}` : num
-        const time = {
-            minutes: isZero(Math.floor(source / 60)),
-            seconds: isZero(Math.round(source) % 60)
+    const addingZero = (num) => num < 10 ? `0${num}` : num;
+
+    const looperRangeNumber = (from, to, number) => {
+        if (number > to) return from
+        if (number < from) return to
+        return number
+    }
+
+    const createNode = (node, className, content = '') => {
+        const domNode = document.createElement(node);
+        domNode.textContent = content;
+        domNode.classList.add(className);
+        return domNode;
+    };
+
+    const getTime = function (source) {
+        return {
+            minutes: addingZero(Math.floor(source / 60)),
+            seconds: addingZero(Math.round(source) % 60)
         }
-        return time
     }
 
-    const renderPlaylist = (parentClass, appendClass) => {
-        const domParent = document.querySelector(parentClass);
-        domParent.textContent = '';
-        musicPlaylist.forEach(trackData => {
-            const li = document.createElement('li');
-            li.textContent = trackData.name;
-            li.classList.add(appendClass);
-            domPlaylistTracks.push(li);
-            domParent.append(li);
-        })
-    }
+    const renderMusic = (trackData, index) => {
+        const li = createNode('li', 'play-item', trackData.name);
+        li.setAttribute('key', index);
+        domPlaylistTracks.push(li);
+        domPlayList.append(li);
+    };
 
-    renderPlaylist('.play-list', 'play-item');
+    const renderPlaylist = () => musicPlaylist.forEach(renderMusic);
 
-    document.addEventListener('click', (e) => player(e));
-    const marginLeft = parseInt(styleSelectP.width, 10) / 2;
-    domTimeline.addEventListener('mousemove', (e) => {
-        domSelectPoint.style.marginLeft = `${e.layerX - marginLeft}px`;
+    const showTooltip = (e) => {
+        const tooltipTimelinePosition = parseInt(styleSelectP.width, 10) / 2;
+        domSelectPoint.style.marginLeft = `${e.layerX - tooltipTimelinePosition}px`;
         domSelectPoint.classList.add('active');
         let timePointer = Math.abs((e.layerX * playNow.source.duration) / parseInt(styleDomTimeline.width, 10))
         domSelectPoint.textContent = `${getTime(timePointer).minutes}:${getTime(timePointer).seconds}`
-    });
-    domTimeline.addEventListener('mouseout', (e) => {
-        domSelectPoint.classList.remove('active');
-    });
+    }
+
+    const hideTooltip = () => domSelectPoint.classList.remove('active');
+
     const clickOnTimeline = (e) => {
         const x = e.layerX * playNow.source.duration / 180;
         playNow.source.currentTime = x;
-        sliderPosition = e.layerX;
-        console.dir(playNow.source);
     }
-    domTimeline.addEventListener('click', (e) => clickOnTimeline(e));
 
-    domVolume.addEventListener('mouseover', (e) => {
-        if (!muted) {
-            domRange.classList.add('active');
-            domRange.addEventListener('input', (e) => {
-                if (!muted) {
-                    domRange.classList.add('active');
-                    volumeLevel = +domRange.value
-                }
-            })
-        }
-    })
+    const showRangeVolume = () => !muted && domRange.classList.add('active');
+    const hideRangeVolume = () => domRange.classList.remove('active');
+    const setRangeVolume = () => {
+        !muted && domRange.classList.add('active');
+        volumeLevel = +domRange.value;
+    }
 
-    document.addEventListener('mouseover', (e) => {
-        if (e.target !== domVolume &&
-            e.target !== domRegulator &&
-            e.target !== domRange &&
-            !e.target.classList.contains('.volume-wrapper')) {
-            domRange.classList.remove('active');
+    const timeUpdate = () => {
+        const timeNow = {
+            min: getTime(playNow.source.currentTime).minutes,
+            sec: getTime(playNow.source.currentTime).seconds
         }
-    })
+        const timeDuration = {
+            min: getTime(playNow.source.duration).minutes,
+            sec: getTime(playNow.source.duration).seconds
+        }
+        domTime.textContent =
+            `${timeNow.min}:${timeNow.sec} / ${timeDuration.min}:${timeDuration.sec}`
+    }
+
+    const setVolume = () => {
+        playNow.source.muted = muted;
+        playNow.source.volume = volumeLevel;
+    }
+    const setSliderPosition = () => {
+        const end = playNow.source.duration;
+        let coefficient = parseInt(styleDomTimeline.width, 10) / end;
+        let value = Math.round(coefficient * playNow.source.currentTime);
+        domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`;
+        domTimelineActive.style.width = `${Math.round(value)}px`;
+
+    }
+    const processMusic = () => {
+        setVolume();
+        setSliderPosition();
+        timeUpdate();
+    }
+
+    const clickOnStop = () => {
+        playNow.source.pause();
+        playNow.source.currentTime = 0;
+    }
+
+    const playMusic = () => playNow.source.play();
+    const pauseMusic = () => playNow.source.pause();
+    const isPaused = () => playNow.source.paused;
+    const clickOnPlay = () => isPaused() ? playMusic() : pauseMusic();
+    const clickOnNextPrev = (isNext) => {
+        const direction = isNext ? 1 : -1;
+        const index = looperRangeNumber(0, musicPlaylist.length - 1, playNow.id + direction);
+        const selectedMusic = musicPlaylist[index];
+        clickOnMusicPlaylist(selectedMusic);
+    }
+
+    const clickOnVolume = () => {
+        muted = !muted
+        domVolume.classList.toggle('mute')
+        muted ? domRange.classList.remove('active') : domRange.classList.add('active')
+    }
+
+    const handlerPlay = function () {
+        const domTrack = domPlaylistTracks.find((music) => +music.getAttribute('key') === playNow.id);
+        domNameMusic.textContent = playNow.name;
+        domPlaylistTracks.forEach((music) => music.classList.remove('select', 'item-active'));
+        playNow.source.addEventListener('timeupdate', processMusic);
+        domPlay.classList.add('pause');
+        domTrack.classList.add('select');
+        domTrack.classList.add('item-active');
+    }
+    const handlerPause = function () {
+        const domTrack = domPlaylistTracks.find((music) => +music.getAttribute('key') === playNow.id);
+        domPlaylistTracks.forEach((music) => music.classList.remove('select', 'item-active'));
+        domPlay.classList.remove('pause');
+        domTrack.classList.add('select');
+        domTrack.classList.remove('item-active');
+    }
+
+    const clickOnMusicPlaylist = (selectedMusic) => {
+        if (playNow) clickOnStop();
+        playNow = selectedMusic;
+        clickOnPlay();
+    }
 
     const player = (e) => {
-        const timeUpdate = () => {
-            const timeNow = {
-                minutes: getTime(playNow.source.currentTime).minutes,
-                seconds: getTime(playNow.source.currentTime).seconds
-            }
-            const timeDuration = {
-                minutes: getTime(playNow.source.duration).minutes,
-                seconds: getTime(playNow.source.duration).seconds
-            }
-            domTime.textContent =
-                `${timeNow.minutes}:${timeNow.seconds} / ${timeDuration.minutes}:${timeDuration.seconds}`
-        }
-        const playMusicRender = (musicData, domTrack) => {
-            if (playNow) {
-                playNow.source.pause()
-            }
-            playNow = musicData;
-            playNow.source.currentTime = 0;
-            playNow.source.play();
-            domPlaylistTracks.forEach(item => item.classList.remove('item-active'));
-            domTrack.classList.add('item-active');
-            domPlay.classList.add('pause');
-            domNameMusic.textContent = playNow.name;
-            // const end = playNow.source.duration;
-            // const oneStep = parseInt(styleDomTimeline.width, 10) / end;
-            // let value = 0;
-            // let step = Math.round(playNow.source.currentTime)
-            const startSlider = () => {
-                timeUpdate();
-                playNow.source.muted = muted;
-                playNow.source.volume = volumeLevel;
-                // let stepTwo = Math.round(playNow.source.currentTime)
-                // if (step !== stepTwo){ // если музыка играет слайдер движется
-                //     step = stepTwo;
-                //     // value += oneStep;
-                //     if (sliderPosition) {
-                //         value = sliderPosition; sliderPosition = 0
-                //     } else {value += oneStep}
-                //     domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`
-                //     console.log( domSlider.style.transform, value, playNow.source.ended)
-                //     if (Math.round(end) === step) {
-                //         clickOnNextPrev();
-                //         playNow.source.removeEventListener('timeupdate', startSlider);
-                //     }
-                // }
-                const end = playNow.source.duration;
-                let coeff = parseInt(styleDomTimeline.width, 10) / end;
-                let value = Math.round(coeff * playNow.source.currentTime);
-                domSlider.style.transform = `translate(${Math.round(value)}px, 0px)`;
-                domTimelineActive.style.width = `${Math.round(value)}px`
-                if (Math.round(end) === Math.round(playNow.source.currentTime)) {
-                    clickOnNextPrev();
-                }
-            }
-            playNow.source.addEventListener('timeupdate', startSlider);
-
-        }
-
-        const stopMusicRender = (domTrack) => {
-            playNow.source.pause();
-            playNow.source.currentTime = 0;
-            domPlay.classList.remove('pause');
-            domTrack.classList.remove('item-active');
-        }
-
-        const clickOnPlaylist = (domLiTrack, i) => {
-            if (playNow) {
-                if (playNow.name === e.target.textContent) {
-                    playNow.source.paused ? playMusicRender(musicPlaylist[i], domLiTrack) : stopMusicRender(domLiTrack)
-                } else {
-                    stopMusicRender(domLiTrack);
-                    playMusicRender(musicPlaylist[i], domLiTrack);
-                }
-            } else {
-                playMusicRender(musicPlaylist[i], domLiTrack);
-            }
-        }
-        const clickOnPlay = () => {
-            domPlaylistTracks.forEach((domLiTrack, i) => {
-                if (!playNow) { playMusicRender(musicPlaylist[0], domPlaylistTracks[0]) }
-                else {
-                    if (playNow.name === domLiTrack.textContent) {
-                        playNow.source.paused ? playMusicRender(playNow, domLiTrack) : stopMusicRender(domLiTrack);
-                    }
-                }
-            });
-        }
-        const clickOnNextPrev = (next = true) => {
-            const lastIndexTrack = musicPlaylist.length - 1
-            const iMusicStart = next ? 1 : lastIndexTrack
-            if (!playNow) {
-                playMusicRender(musicPlaylist[iMusicStart], domPlaylistTracks[iMusicStart]);
-            }
-            else {
-                for (let index of musicPlaylist.keys()) {
-                    let iMusic = next ? index + 1 : index - 1
-                    if (musicPlaylist[index] === playNow) {
-                        if (next && index === lastIndexTrack) { iMusic = 0 };
-                        if (!next && index === 0) { iMusic = lastIndexTrack };
-                        return playMusicRender(musicPlaylist[iMusic], domPlaylistTracks[iMusic]);
-                    }
-                }
-            }
-        }
-
-        const clickOnVolume = () => {
-            muted = !muted
-            domVolume.classList.toggle('mute')
-            muted ? domRange.classList.remove('active') : domRange.classList.add('active')
-        }
 
         domPlaylistTracks.forEach((domLiTrack, i) => {
-            if (domLiTrack === e.target) clickOnPlaylist(domLiTrack, i);
+            if (domLiTrack === e.target) clickOnMusicPlaylist(musicPlaylist[i]);
         });
-
 
         switch (e.target) {
             case domPlay: return clickOnPlay();
+            case domStop: return clickOnStop();
             case domPrev: return clickOnNextPrev(false);
-            case domNext: return clickOnNextPrev();
+            case domNext: return clickOnNextPrev(true);
             case domVolume: return clickOnVolume();
         }
-        console.log(musicPlaylist, playNow)
     }
+
+    const initPlayer = () => {
+        musicPlaylist.forEach(item => item.source = new Audio(item.music));
+        renderPlaylist();
+        playNow = musicPlaylist[0];
+        domPlaylistTracks[0].classList.add('select');
+        playNow.source.addEventListener('loadeddata', timeUpdate);
+        domNameMusic.textContent = playNow.name;
+        domTimeline.addEventListener('mousemove', showTooltip);
+        domTimeline.addEventListener('mouseout', hideTooltip);
+        domPlayer.addEventListener('click', (e) => player(e));
+        domTimeline.addEventListener('click', clickOnTimeline);
+        domVolume.addEventListener('mouseover', showRangeVolume);
+        domRange.addEventListener('input', setRangeVolume);
+        domPlayerControls.addEventListener('mouseleave', hideRangeVolume);
+        musicPlaylist.forEach(music => music.source.addEventListener('play', handlerPlay));
+        musicPlaylist.forEach(music => music.source.addEventListener('pause', handlerPause));
+    }
+
+    initPlayer();
 }
 
-const translateMusic = (lang) => {
-    const play = document.querySelector('.play');
-    const name = document.querySelector('.marquee')
-    const changeName = () => name.textContent = lang === 'ru' ? 'Выберите трек для воспроизведения' : 'Select a track to play'
-    !play.classList.contains('pause') && changeName();
-}
-export {Music, translateMusic}
+export default Music
