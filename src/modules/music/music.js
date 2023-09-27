@@ -78,6 +78,7 @@ const Music = () => {
     const clickOnTimeline = (e) => {
         const x = e.layerX * playNow.source.duration / 180;
         playNow.source.currentTime = x;
+        setSliderPosition();
     }
 
     const showRangeVolume = () => !muted && domRange.classList.add('active');
@@ -116,6 +117,7 @@ const Music = () => {
         setVolume();
         setSliderPosition();
         timeUpdate();
+        playNow.source.ended && clickOnNextPrev(true)
     }
 
     const clickOnStop = () => {
