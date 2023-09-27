@@ -149,6 +149,7 @@ const Music = () => {
     const x = (e.layerX * playNow.source.duration) / 180;
     playNow.source.currentTime = x;
     setSliderPosition();
+    timeUpdate();
   };
 
   const clickOnMusicPlaylist = (selectedMusic) => {
