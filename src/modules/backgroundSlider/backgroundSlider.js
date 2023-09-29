@@ -1,136 +1,209 @@
-import timesOfDay from "../greetings/timesOfDay"
-import addingZeroFirst from "../time/addingZeroFirst"
+import timesOfDay from '../greetings/timesOfDay';
+import { addingZero, looperRangeNumber, randomNumber } from '../../utils/utils';
 
-const BackgroundSlider = ({classWrapper, classArrowNext, classArrowPrev, sourceImages, update = false}) => {
-    const path = "https://raw.githubusercontent.com/Duxcoder/stage1-tasks/assets/images"
-    let slideNumberNow = 0;
-    const randomNumber = (maxNumber) => {
-        return Math.ceil((Math.random() * maxNumber)) 
+const UNSPLASH = 'unsplash';
+const GITHUB = 'github';
+const FLICKR = 'flickr';
+
+const BackgroundSlider = ({
+  classWrapper,
+  classArrowNext,
+  classArrowPrev,
+  sourceImages,
+  update = false,
+}) => {
+  const wrapper = document.querySelector(classWrapper);
+  const arrowNext = document.querySelector(classArrowNext);
+  const arrowPrev = document.querySelector(classArrowPrev);
+  const selectTags = document.querySelector('.select-tags');
+  const select = document.querySelector('.select-background');
+  let tags = localStorage.getItem('tags');
+  selectTags.value = tags;
+
+  const github = { path: 'https://raw.githubusercontent.com/Duxcoder/stage1-tasks/assets/images' };
+  let slideNumberNow = 0;
+  const time = timesOfDay('en').replace('Good ', '');
+  const firstNumber = addingZero(randomNumber(19.9));
+  let images = [];
+
+  const getImgUrl = (source, number, arr) => {
+    switch (source) {
+      case GITHUB:
+        return `${github.path}/${time}/${number}.jpg`;
+      case UNSPLASH:
+        return `${arr[number - 1][0]}`;
+      case FLICKR:
+        return `${arr[number - 1][0]}`;
+      case 'unsplashThumb':
+        return `${arr[number - 1][1]}`;
+      case 'flickrThumb':
+        return `${arr[number - 1][1]}`;
+      default:
+        return `${github.path}/${time}/${number}.jpg`;
     }
-    const time = timesOfDay('en').replace('Good ', '');
-    const firstNumber = addingZeroFirst(randomNumber(19.9));
-    let images = [];
+  };
 
-    const createUrl = (source, number, arr) => {
-        switch (source) {
-            case 'github': return `${path}/${time}/${number}.jpg`
-            case 'unsplash': return `${arr[number - 1][0]}`
-            case 'flickr': return `${arr[number - 1][0]}`
-            case 'unsplashThumb': return `${arr[number - 1][1]}`
-            case 'flickrThumb': return `${arr[number - 1][1]}`
-            default: return `${path}/${time}/${number}.jpg`
-        }
+  const render = (source, number, arr) => {
+    const url = `url(${getImgUrl(source, number, arr)})`;
+    const img = document.createElement('img');
+    img.onload = () => {
+      document.body.style.backdropFilter = 'blur(0px)';
+      document.body.style.backgroundImage = url;
+    };
+    img.src = getImgUrl(source, number, arr);
+    slideNumberNow = number;
+  };
+
+  const clickNext = () => {
+    const number = looperRangeNumber(1, 20, +slideNumberNow + 1);
+    if (sourceImages === GITHUB) return render(sourceImages, addingZero(number), images);
+    return render(sourceImages, randomNumber(20), images);
+  };
+
+  const clickPrev = () => {
+    const number = looperRangeNumber(1, 20, +slideNumberNow - 1);
+    if (sourceImages === GITHUB) return render(sourceImages, addingZero(number), images);
+    return render(sourceImages, randomNumber(20), images);
+  };
+
+  const clickHandle = (e) => {
+    if (e.target === arrowNext) clickNext();
+    if (e.target === arrowPrev) clickPrev();
+  };
+
+  if (!update) wrapper.addEventListener('click', clickHandle);
+
+  const unsplash = {
+    url: 'https://api.unsplash.com',
+    search() {
+      this.url += '/search';
+      return this;
+    },
+    page(num = 20) {
+      this.url += `/photos?page=${randomNumber(num)}`;
+      return this;
+    },
+    orientation() {
+      this.url += '&orientation=landscape';
+      return this;
+    },
+    query(tags) {
+      this.url += `&query=${tags}`;
+      return this;
+    },
+    perPage(num) {
+      this.url += `&per_page=${num}`;
+      return this;
+    },
+    getOptions() {
+      return {
+        headers: {
+          Authorization: 'Client-ID GDoYYGQvzZ1r_y22PViJEMUeWI3i6aqIRxMkQT9aGm8',
+        },
+      };
+    },
+  };
+
+  const flickr = {
+    url: 'https://www.flickr.com/services/rest/?',
+
+    method(method = 'flickr.photos.search') {
+      this.url += `method=${method}`;
+      return this;
+    },
+
+    apiKey(apiKey = '5abab1b2fe7a0a280edbfb247662293e') {
+      this.url += `&api_key=${apiKey}`;
+      return this;
+    },
+
+    tags(tags) {
+      this.url += `&tags=${tags}`;
+      return this;
+    },
+
+    extras() {
+      this.url += `&extras=url_l&format=json&nojsoncallback=1`;
+      return this;
+    },
+  };
+
+  const createUrlApi = (tags = '') => {
+    switch (sourceImages) {
+      case UNSPLASH:
+        return unsplash
+          .search()
+          .page()
+          .orientation()
+          .query(tags || time)
+          .perPage(20).url;
+      case FLICKR:
+        return flickr
+          .method()
+          .apiKey()
+          .tags(tags || time)
+          .extras().url;
     }
+  };
 
-    const Render = (source, number, arr) => {
-        console.log(source)
-        const url = `url(${createUrl(source, number, arr)})`
-        const img = document.createElement('img');
-        img.onload = () => { 
-            document.body.style.backdropFilter = 'blur(0px)'
-            document.body.style.backgroundImage = url; // по загрузке img отобразится фон
-            console.log(source, url)
-        }
-        img.src = createUrl(source, number, arr);
-        slideNumberNow = number;
+  let url = createUrlApi(tags);
+  select.addEventListener('change', () => {
+    sourceImages = localStorage.getItem('bgSource');
+    images = [];
+    if (tags) {
+      selectTags.value = tags;
+      url = createUrlApi(tags);
+    } else {
+      url = createUrlApi();
     }
+    switcher();
+  });
+  selectTags.addEventListener('change', (e) => {
+    localStorage.setItem('tags', e.target.value);
+    tags = e.target.value;
+    images = [];
+    url = createUrlApi(tags);
+    switcher();
+  });
 
-    const wrapper = document.querySelector(classWrapper),
-          arrowNext = document.querySelector(classArrowNext),
-          arrowPrev = document.querySelector(classArrowPrev);
+  const getImageUnsplash = (data) => {
+    if (data.results.length < 2) alert('Для данного тега не нашлось изображений...');
+    data.results.forEach((item) => images.push([item.urls.regular, item.urls.thumb]));
+  };
+  const getImageFlickr = (data) => {
+    if (data.photos.photo.length < 2) alert('Для данного тега не нашлось изображений...');
+    data.photos.photo.forEach((item) => images.push([item.url_l, item.url_l]));
+  };
 
-    const clickNext = () => {
-        console.log(images)
-        if (sourceImages === 'github') {
-            const number = +slideNumberNow + 1;
-            if (number > 20) return Render(sourceImages, addingZeroFirst(1), images)
-            return Render(sourceImages, addingZeroFirst(number), images)
-        }
-        return Render(sourceImages, addingZeroFirst(randomNumber(20)), images)
-    }
-
-    const clickPrev = () => {
-        if (sourceImages === 'github') {
-            const number = +slideNumberNow - 1;
-            if (number < 1) return Render(sourceImages, 20, images)
-            return Render(sourceImages, addingZeroFirst(number), images)
-        }
-        return Render(sourceImages, addingZeroFirst(randomNumber(20)), images)
-    }
-
-    !update && wrapper.addEventListener('click', (e) => {
-        if (e.target === arrowNext) clickNext()
-        if (e.target === arrowPrev) clickPrev()
-    })
-    let url;
-    const createUrlApi = (tags) => {
-        if (sourceImages === 'unsplash') {
-            url = `https://api.unsplash.com/search/photos?page=${randomNumber(20)}&orientation=landscape&query=${tags ? tags : time }&per_page=20`
-         } else {
-            url = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=5abab1b2fe7a0a280edbfb247662293e&tags=${tags ? tags : time }&extras=url_l&format=json&nojsoncallback=1`
-         }
-    }
-   
-    const selectTags = document.querySelector('.select-tags');
-    const select = document.querySelector('.select-background');
-    let tags = localStorage.getItem('tags') ? (localStorage.getItem('tags'), selectTags.value = localStorage.getItem('tags')) : false;
-    
-    createUrlApi(tags);
-    select.addEventListener('change', () => {
-        sourceImages = localStorage.getItem('bgSource');
-        images = []
-    // const selectTags = document.querySelector('.select-tags');
-        // if (selectTags.value !== '') {
-            if (tags) {
-            selectTags.value = tags;
-            createUrlApi(tags)
-        } else {
-            createUrlApi()
-        }
-        req()
-        // Render(sourceImages, firstNumber, images);
-    })
-    selectTags.addEventListener('change', (e) => {
-        localStorage.setItem('tags', e.target.value)
-        tags = e.target.value
-        images = [];
-        createUrlApi(tags);
-        req();
-        
-    })
-    const req = () => {
-        let options = {
-            headers: {
-                Authorization: 'Client-ID GDoYYGQvzZ1r_y22PViJEMUeWI3i6aqIRxMkQT9aGm8'
-            }
-        }
-        fetch(url, sourceImages === 'unsplash' ? options : {})
-        .then(response => response.json())
-        .then(data => {
-            if (sourceImages === 'unsplash' ){
-                if (data.results.length < 2) alert('Для данного тега не нашлось изображений...')
-                data.results.forEach(item => {
-                    images.push([item.urls.regular, item.urls.thumb])
-                    console.log(data)
-                })
-            } else {
-                if (data.photos.photo.length < 2) alert('Для данного тега не нашлось изображений...')
-                data.photos.photo.forEach(item => {
-                    images.push([item.url_l, item.url_l])
-                })
-            }   
-        })
-        .then(() => {
-            console.log(sourceImages)
-            Render(sourceImages, firstNumber, images);
-        })
-        .catch(error => {
+  const switcher = () => {
+    switch (sourceImages) {
+      case GITHUB:
+        return render(sourceImages, firstNumber, images);
+      case UNSPLASH:
+        return req(unsplash.getOptions())
+          .then(getImageUnsplash)
+          .then(() => render(sourceImages, firstNumber, images))
+          .catch((error) => {
             console.error('There was a problem with the fetch operation:', error);
-        });
+          });
+      case FLICKR:
+        return req()
+          .then(getImageFlickr)
+          .then(() => render(sourceImages, firstNumber, images))
+          .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
     }
-   req()
-    
-    
-    
-}
-export default BackgroundSlider
+  };
+
+  const req = async (options = {}) => {
+    return fetch(url, options).then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    });
+  };
+  switcher();
+};
+export default BackgroundSlider;
