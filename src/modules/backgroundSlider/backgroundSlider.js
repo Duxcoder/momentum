@@ -15,7 +15,8 @@ const BackgroundSlider = ({
   const wrapper = document.querySelector(classWrapper);
   const arrowNext = document.querySelector(classArrowNext);
   const arrowPrev = document.querySelector(classArrowPrev);
-  const selectTags = document.querySelector('.select-tags');
+  const tagsBlock = document.querySelector('.background-tags-block');
+  const selectTags = tagsBlock.querySelector('.select-tags');
   const select = document.querySelector('.select-background');
   let tags = localStorage.getItem('tags');
   selectTags.value = tags;
@@ -25,6 +26,9 @@ const BackgroundSlider = ({
   const time = timesOfDay('en').replace('Good ', '');
   const firstNumber = addingZero(randomNumber(19.9));
   let images = [];
+
+  const checkSourceForViewTags = () =>
+    (tagsBlock.style.display = sourceImages === GITHUB ? 'none' : 'flex');
 
   const getImgUrl = (source, number, arr) => {
     switch (source) {
@@ -85,8 +89,6 @@ const BackgroundSlider = ({
     if (e.target === arrowNext) clickNext();
     if (e.target === arrowPrev) clickPrev();
   };
-
-  if (!update) wrapper.addEventListener('click', clickHandle);
 
   const unsplash = {
     getUrl() {
@@ -172,26 +174,6 @@ const BackgroundSlider = ({
     }
   };
 
-  let url = createUrlApi(tags);
-  select.addEventListener('change', () => {
-    if (sourceImages) sourceImages = localStorage.getItem('bgSource');
-    images = [];
-    if (tags) {
-      selectTags.value = tags;
-      url = createUrlApi(tags);
-    } else {
-      url = createUrlApi();
-    }
-    switcher();
-  });
-  selectTags.addEventListener('change', (e) => {
-    localStorage.setItem('tags', e.target.value);
-    tags = e.target.value;
-    images = [];
-    url = createUrlApi(tags);
-    switcher();
-  });
-
   const getImageUnsplash = (data) => {
     if (data.results.length < 2) alert('Для данного тега не нашлось изображений...');
     data.results.forEach((item) => images.push([item.urls.regular, item.urls.thumb]));
@@ -235,6 +217,33 @@ const BackgroundSlider = ({
     });
   };
 
-  switcher();
+  const initial = () => {
+    checkSourceForViewTags();
+    if (!update) wrapper.addEventListener('click', clickHandle);
+    select.addEventListener('change', () => {
+      if (sourceImages) sourceImages = localStorage.getItem('bgSource');
+      images = [];
+      checkSourceForViewTags();
+      if (tags) {
+        selectTags.value = tags;
+        url = createUrlApi(tags);
+      } else {
+        url = createUrlApi();
+      }
+      switcher();
+    });
+    selectTags.addEventListener('change', (e) => {
+      localStorage.setItem('tags', e.target.value);
+      tags = e.target.value;
+      images = [];
+      url = createUrlApi(tags);
+      switcher();
+    });
+    switcher();
+  };
+
+  let url = createUrlApi(tags);
+
+  initial();
 };
 export default BackgroundSlider;
