@@ -18,12 +18,12 @@
       <div class="player">
         <div class="marquee">Select a track to play</div>
         <div class="player-controls">
-          <button class="play-prev player-icon"></button>
-          <button class="play player-icon"></button>
-          <button class="stop player-icon"></button>
-          <button class="play-next player-icon"></button>
+          <button class="play-prev player-icon" aria-label="Previous track"></button>
+          <button class="play player-icon" aria-label="Play track"></button>
+          <button class="stop player-icon" aria-label="Stop track"></button>
+          <button class="play-next player-icon" aria-label="Next track"></button>
           <div class="volume-wrapper">
-            <button class="volume player-icon"></button>
+            <button class="volume player-icon" aria-label="Mute track"></button>
             <div class="volume-regulator">
               <input type="range" class="volume_range" name="volume" min="0" max="1" step="0.1" value="0.5" />
             </div>
@@ -85,8 +85,8 @@
   </header>
   <main class="main">
     <div class="slider-icons">
-      <button class="slide-prev slider-icon"></button>
-      <button class="slide-next slider-icon"></button>
+      <button class="slide-prev slider-icon" aria-label="Previous slide background"></button>
+      <button class="slide-next slider-icon" aria-label="Next slide background"></button>
     </div>
     <div class="time_wrapper">
       <time class="time"></time>
@@ -104,7 +104,7 @@
   <footer class="footer">
     <div class="quote_wrapper">
       <div class="quote-container">
-        <button class="change-quote"></button>
+        <button class="change-quote" aria-label="Update quote"></button>
         <div>
           <div class="quote"></div>
           <div class="author"></div>
