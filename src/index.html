@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Momentum">
+  <title>MOMENTUM | Duxcoder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Roboto+Mono:wght@500&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header class="header">
+    <div class="player_wrapper">
+      <div class="player">
+        <div class="marquee">Select a track to play</div>
+        <div class="player-controls">
+          <button class="play-prev player-icon" aria-label="Previous track"></button>
+          <button class="play player-icon" aria-label="Play track"></button>
+          <button class="stop player-icon" aria-label="Stop track"></button>
+          <button class="play-next player-icon" aria-label="Next track"></button>
+          <div class="volume-wrapper">
+            <button class="volume player-icon" aria-label="Mute track"></button>
+            <div class="volume-regulator">
+              <input type="range" class="volume_range" name="volume" min="0" max="1" step="0.1" value="0.5" />
+            </div>
+          </div>
+        </div>
+        <div class="timeline-container">
+          <div class="timeline">
+            <div class="timeline_active"></div>
+            <div class="space"></div>
+            <span class="player-slider slider"></span>
+            <div class="select-point"></div>
+          </div>
+          <div class="time-music">00:00 / 00: 00</div>
+        </div>
+        <ul class="play-list"></ul>
+      </div>
+    </div>
+
+    <div class="options">
+      <div class="btn-options">
+        <span>OPTIONS</span>
+        <span class="icon-options"></span>
+      </div>
+      <div class="options-wrapper">
+        <div class="select language-block">
+          <span class="select-title">Language:</span>
+          <select class="select-option select-language" name="select-language">
+            <option value="ru">Russian</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <div class="select background-source-block">
+          <span class="select-title">Background images from: </span>
+          <select class="select-option select-background" name="select-background">
+            <option value="github">GitHub</option>
+            <option value="unsplash">Unsplash</option>
+            <option value="flickr">Flickr</option>
+          </select>
+        </div>
+        <div class="select background-tags-block">
+          <span class="select-title">Select image by tag:</span>
+          <input class="select-option select-tags" type="text" name="select-tags" />
+        </div>
+      </div>
+    </div>
+    <div class="weather">
+      <div class="weather_wrapper">
+        <input type="text" class="city" />
+        <i class="weather-icon owf"></i>
+        <div class="weather-error"></div>
+        <div class="description-container">
+          <span class="temperature"></span>
+          <span class="weather-description"></span>
+        </div>
+        <div class="wind"></div>
+        <div class="humidity"></div>
+      </div>
+    </div>
+  </header>
+  <main class="main">
+    <div class="slider-icons">
+      <button class="slide-prev slider-icon" aria-label="Previous slide background"></button>
+      <button class="slide-next slider-icon" aria-label="Next slide background"></button>
+    </div>
+    <div class="time_wrapper">
+      <time class="time"></time>
+    </div>
+    <div class="date_wrapper">
+      <date class="date"></date>
+    </div>
+    <div class="greeting-container">
+      <div class="greeting_wrapper">
+        <span class="greeting"></span>
+        <input type="text" class="name" />
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="quote_wrapper">
+      <div class="quote-container">
+        <button class="change-quote" aria-label="Update quote"></button>
+        <div>
+          <div class="quote"></div>
+          <div class="author"></div>
+        </div>
+      </div>
+    </div>
+    <div class="todo_wrapper">
+      <div class="todo">
+        <div class="todo_desk">
+          <div class="todo_head">
+            <div class="select todo_drop">
+              <input class="select__input" type="hidden" name="">
+              <div class="select_head">Choice</div>
+              <ul class="select_list">
+                <li data-optionItem="Inbox" class="select_item">Inbox</li>
+                <li data-optionItem="Today" class="select_item">Today</li>
+                <li data-optionItem="Done" class="select_item">Done</li>
+              </ul>
+            </div>
+            <div class="todo_settings"><span></span></div>
+          </div>
+          <div class="todo_list">
+            <ul class="ul_todo">
+              <li class="li_todo">
+                <input type="checkbox" name="todoItem" class="todo_input" />
+                <div class="optionsTodo">
+                  <div class="btn_options">
+                    <span></span>
+                  </div>
+                  <div class="wrapper_options">
+                    <ul class="todo_options_list">
+                      <li class="todo_option_item">Edit</li>
+                      <li class="todo_option_item">Move to Inbox</li>
+                      <li class="todo_option_item">Move to Today</li>
+                      <li class="todo_option_item">Delete</li>
+                    </ul>
+                  </div>
+                </div>
+                <label for="todoItem">TODO</label>
+              </li>
+            </ul>
+          </div>
+          <div class="todo_addToDo">
+            <input type="text" class="todo_textAdd" />
+          </div>
+        </div>
+        <div class="todo_btn">ToDo</div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
