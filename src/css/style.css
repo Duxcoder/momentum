@@ -551,6 +551,9 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   top: 50%;
   margin-top: -16px;
   cursor: pointer;
+  &:disabled {
+    cursor: progress;
+  }
 }
 
 .slide-prev {

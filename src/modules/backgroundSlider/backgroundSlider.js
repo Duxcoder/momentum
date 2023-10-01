@@ -34,36 +34,51 @@ const BackgroundSlider = ({
         return `${arr[number - 1][0]}`;
       case FLICKR:
         return `${arr[number - 1][0]}`;
-      case 'unsplashThumb':
-        return `${arr[number - 1][1]}`;
-      case 'flickrThumb':
+      case 'thumb':
         return `${arr[number - 1][1]}`;
       default:
         return `${github.path}/${time}/${number}.jpg`;
     }
   };
 
+  const disabledButtons = function (e) {
+    if (e.target === this) {
+      arrowPrev.disabled = true;
+      arrowNext.disabled = true;
+      document.body.removeEventListener('transitionstart', disabledButtons);
+    }
+  };
+
+  const enabledButtons = function (e) {
+    if (e.target === this) {
+      arrowPrev.disabled = false;
+      arrowNext.disabled = false;
+      document.body.removeEventListener('transitionend', enabledButtons);
+    }
+  };
+
   const render = (source, number, arr) => {
     const url = `url(${getImgUrl(source, number, arr)})`;
-    const img = document.createElement('img');
-    img.onload = () => {
-      document.body.style.backdropFilter = 'blur(0px)';
-      document.body.style.backgroundImage = url;
-    };
+    const img = new Image();
     img.src = getImgUrl(source, number, arr);
+    document.body.addEventListener('transitionstart', disabledButtons);
+    document.body.addEventListener('transitionend', enabledButtons);
+    img.onload = () => (document.body.style.backgroundImage = url);
     slideNumberNow = number;
   };
 
   const clickNext = () => {
-    const number = looperRangeNumber(1, 20, +slideNumberNow + 1);
+    const countImages = sourceImages === GITHUB ? 20 : images.length - 1;
+    const number = looperRangeNumber(1, countImages, +slideNumberNow + 1);
     if (sourceImages === GITHUB) return render(sourceImages, addingZero(number), images);
-    return render(sourceImages, randomNumber(20), images);
+    return render(sourceImages, randomNumber(countImages), images);
   };
 
   const clickPrev = () => {
-    const number = looperRangeNumber(1, 20, +slideNumberNow - 1);
+    const countImages = sourceImages === GITHUB ? 20 : images.length - 1;
+    const number = looperRangeNumber(1, countImages, +slideNumberNow - 1);
     if (sourceImages === GITHUB) return render(sourceImages, addingZero(number), images);
-    return render(sourceImages, randomNumber(20), images);
+    return render(sourceImages, randomNumber(countImages), images);
   };
 
   const clickHandle = (e) => {
@@ -74,7 +89,11 @@ const BackgroundSlider = ({
   if (!update) wrapper.addEventListener('click', clickHandle);
 
   const unsplash = {
-    url: 'https://api.unsplash.com',
+    getUrl() {
+      const result = this.url;
+      this.url = 'https://api.unsplash.com';
+      return this.url + result;
+    },
     search() {
       this.url += '/search';
       return this;
@@ -105,8 +124,11 @@ const BackgroundSlider = ({
   };
 
   const flickr = {
-    url: 'https://www.flickr.com/services/rest/?',
-
+    getUrl() {
+      const result = this.url;
+      this.url = 'https://www.flickr.com/services/rest/?';
+      return this.url + result;
+    },
     method(method = 'flickr.photos.search') {
       this.url += `method=${method}`;
       return this;
@@ -131,24 +153,28 @@ const BackgroundSlider = ({
   const createUrlApi = (tags = '') => {
     switch (sourceImages) {
       case UNSPLASH:
+        unsplash.url = '';
         return unsplash
           .search()
           .page()
           .orientation()
           .query(tags || time)
-          .perPage(20).url;
+          .perPage(20)
+          .getUrl();
       case FLICKR:
+        flickr.url = '';
         return flickr
           .method()
           .apiKey()
           .tags(tags || time)
-          .extras().url;
+          .extras()
+          .getUrl();
     }
   };
 
   let url = createUrlApi(tags);
   select.addEventListener('change', () => {
-    sourceImages = localStorage.getItem('bgSource');
+    if (sourceImages) sourceImages = localStorage.getItem('bgSource');
     images = [];
     if (tags) {
       selectTags.value = tags;
@@ -197,13 +223,18 @@ const BackgroundSlider = ({
   };
 
   const req = async (options = {}) => {
+    arrowPrev.disabled = true;
+    arrowNext.disabled = true;
     return fetch(url, options).then((response) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      arrowPrev.disabled = false;
+      arrowNext.disabled = false;
       return response.json();
     });
   };
+
   switcher();
 };
 export default BackgroundSlider;
