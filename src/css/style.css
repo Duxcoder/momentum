@@ -832,7 +832,7 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   display: none;
   position: absolute;
   right: 14px;
-  top: 6px;
+  top: -6px;
   width: 18px;
   height: 18px;
 }
@@ -844,8 +844,6 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
 
 .li_todo:hover .optionsTodo .btn_options {
   display: flex;
-  /* background: rgb(201, 201, 201);
-  border-radius: 50%; */
 }
 .optionsTodo  .btn_options.active,
 .li_todo:hover .optionsTodo  .btn_options.active  {
@@ -978,8 +976,6 @@ input[type='range'].volume_range::-webkit-slider-thumb:hover {
   border-radius: 10px;
   margin-top: 5px;
   max-height: 205px;
-  /* overflow-x: hidden;
-  overflow-y: auto; */
   z-index: 100;
   margin: 0;
   padding: 0;
