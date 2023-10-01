@@ -1,3 +1,6 @@
+/*!***************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!./css/owfont-regular.css ***!
+  \***************************************************************************/
 /*!
  *  owfont-regular 1.0.0 by Deniz Fuchidzhiev - http://websygen.com
  *  License - font: SIL OFL 1.1, css: MIT License
@@ -556,6 +559,9 @@
 .owf-962-n:before {
   content: "\EE22";
 }
+/*!******************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!./css/style.css ***!
+  \******************************************************************/
 @font-face {
   font-family: 'Arial-MT';
   src: url(assets/fonts/Arial-MT.woff); /* Путь к файлу со шрифтом */
